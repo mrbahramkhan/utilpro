@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Disallow admin/private paths (none for this static site)
+Disallow: /search.html
+
+# Sitemap location
+Sitemap: https://utilpro.net/sitemap.xml
+
+# Crawl delay (optional, be respectful)
+Crawl-delay: 1
