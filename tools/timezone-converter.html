@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Zone Converter — World Clock & Time Converter | UtilPro</title>
+  <meta name="description" content="Convert time between Pakistan (PKT), USA, UK, UAE, Saudi Arabia and 20+ world time zones. Free online time zone converter with live clock.">
+  <link rel="canonical" href="https://utilpro.net/tools/timezone-converter.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/improvements.css">
+  <link rel="stylesheet" href="../css/lang-theme.css">
+</head>
+<body>
+<header class="header"><div class="container"><nav class="nav">
+  <a href="../index.html" class="logo"><div class="logo-icon">🛠️</div>Util<span>Pro</span></a>
+  <div class="nav-links"><a href="../index.html">Home</a><a href="index.html" class="active">Tools</a></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav></div>
+<div class="mobile-menu" id="mobileMenu">
+    <!-- Mobile Language & Theme Quick Select -->
+    <div class="mobile-controls">
+      <button class="mobile-lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ur')">🇵🇰 UR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ar')">🇸🇦 AR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('hi')">🇮🇳 HI</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('fr')">🇫🇷 FR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('zh')">🇨🇳 ZH</button>
+    </div>
+    <div class="mobile-controls" style="flex-wrap:wrap;">
+      <button class="mobile-lang-btn" onclick="setTheme('light')">☀️ Light</button>
+      <button class="mobile-lang-btn" onclick="setTheme('dark')">🌙 Dark</button>
+      <button class="mobile-lang-btn" onclick="setTheme('ocean')">🌊 Ocean</button>
+      <button class="mobile-lang-btn" onclick="setTheme('forest')">🌿 Forest</button>
+      <button class="mobile-lang-btn" onclick="setTheme('sunset')">🌅 Sunset</button>
+      <button class="mobile-lang-btn" onclick="setTheme('purple')">🔮 Purple</button>
+      <button class="mobile-lang-btn" onclick="setTheme('contrast')">⚡ Contrast</button>
+    </div>
+<a href="../index.html">🏠 Home</a><a href="index.html">🔧 Tools</a></div>
+</header>
+
+<div class="tool-header"><div class="tool-container">
+  <h1>🌍 Time Zone Converter</h1>
+  <p>Convert time between any two world time zones instantly. Live world clock included.</p>
+</div></div>
+
+<div class="tool-body"><div class="tool-container">
+  <div class="ad-slot ad-slot-horizontal" style="margin-bottom:28px;"><div>📢 Advertisement</div></div>
+
+  <div class="tool-card-main">
+    <div class="row-3" style="gap:16px; align-items:end; margin-bottom:20px;">
+      <div class="form-group" style="margin:0;">
+        <label for="inputTime">Date & Time</label>
+        <input type="datetime-local" id="inputTime">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label for="fromTZ">From Time Zone</label>
+        <select id="fromTZ"></select>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label for="toTZ">To Time Zone</label>
+        <select id="toTZ"></select>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px;">
+      <button class="btn btn-primary" onclick="convertTime()" style="flex:1; justify-content:center;">🕐 Convert Time</button>
+      <button class="btn btn-outline" onclick="swapZones()">⇄ Swap</button>
+      <button class="btn btn-outline" onclick="setNow()">Now</button>
+    </div>
+
+    <div class="result-box" id="resultBox" style="margin-top:20px;">
+      <div style="text-align:center;">
+        <div style="font-size:0.9rem; color:var(--text-light); margin-bottom:4px;" id="fromLabel">—</div>
+        <div class="result-value" id="convertedTime">—</div>
+        <div style="font-size:0.9rem; color:var(--text-mid); margin-top:6px;" id="diffLabel">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- World Clock -->
+  <div class="tool-card-main" style="margin-top:24px;">
+    <h3 style="margin-bottom:18px;">🌐 Live World Clock</h3>
+    <div id="worldClock" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:14px;"></div>
+  </div>
+
+  <div class="ad-slot ad-slot-horizontal" style="margin-top:24px;"><div>📢 Advertisement</div></div>
+</div></div>
+
+<footer class="footer"><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><p>© 2026 UtilPro</p></div></div></footer>
+<button class="scroll-top" id="scrollTop">↑</button>
+<script src="../js/main.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/themes.js"></script>
+<script src="../js/ads.js"></script>
+<script src="../js/performance.js"></script>
+<script>
+const zones = [
+  { label: '🇵🇰 Pakistan (PKT)', tz: 'Asia/Karachi' },
+  { label: '🇺🇸 New York (EST)', tz: 'America/New_York' },
+  { label: '🇺🇸 Los Angeles (PST)', tz: 'America/Los_Angeles' },
+  { label: '🇬🇧 London (GMT)', tz: 'Europe/London' },
+  { label: '🇦🇪 Dubai (GST)', tz: 'Asia/Dubai' },
+  { label: '🇸🇦 Riyadh (AST)', tz: 'Asia/Riyadh' },
+  { label: '🇮🇳 India (IST)', tz: 'Asia/Kolkata' },
+  { label: '🇧🇩 Bangladesh (BST)', tz: 'Asia/Dhaka' },
+  { label: '🇩🇪 Germany (CET)', tz: 'Europe/Berlin' },
+  { label: '🇫🇷 France (CET)', tz: 'Europe/Paris' },
+  { label: '🇦🇺 Sydney (AEDT)', tz: 'Australia/Sydney' },
+  { label: '🇯🇵 Tokyo (JST)', tz: 'Asia/Tokyo' },
+  { label: '🇨🇳 Beijing (CST)', tz: 'Asia/Shanghai' },
+  { label: '🇸🇬 Singapore (SGT)', tz: 'Asia/Singapore' },
+  { label: '🇨🇦 Toronto (EST)', tz: 'America/Toronto' },
+  { label: '🇲🇾 Kuala Lumpur', tz: 'Asia/Kuala_Lumpur' },
+  { label: '🇹🇷 Istanbul (TRT)', tz: 'Europe/Istanbul' },
+  { label: '🇧🇷 São Paulo (BRT)', tz: 'America/Sao_Paulo' },
+];
+
+const fromSel = document.getElementById('fromTZ');
+const toSel = document.getElementById('toTZ');
+zones.forEach(z => {
+  fromSel.innerHTML += `<option value="${z.tz}">${z.label}</option>`;
+  toSel.innerHTML += `<option value="${z.tz}">${z.label}</option>`;
+});
+fromSel.value = 'Asia/Karachi';
+toSel.value = 'America/New_York';
+
+function setNow() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16);
+  document.getElementById('inputTime').value = local;
+}
+
+function convertTime() {
+  const inputVal = document.getElementById('inputTime').value;
+  const fromTZ = document.getElementById('fromTZ').value;
+  const toTZ = document.getElementById('toTZ').value;
+  if (!inputVal) { alert('Please select a date and time.'); return; }
+
+  const [date, time] = inputVal.split('T');
+  const [year, month, day] = date.split('-').map(Number);
+  const [hour, min] = time.split(':').map(Number);
+
+  // Create date in source timezone
+  const fromDateStr = `${date}T${time}:00`;
+  const fromDate = new Date(fromDateStr);
+
+  // Get offset difference
+  const fromOffset = getOffset(fromTZ, fromDate);
+  const toOffset = getOffset(toTZ, fromDate);
+  const diffMs = (toOffset - fromOffset) * 60 * 1000;
+  const converted = new Date(fromDate.getTime() + diffMs);
+
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit', hour12:true };
+  const result = converted.toLocaleString('en-US', opts);
+  const fromLabel = zones.find(z => z.tz === fromTZ)?.label || fromTZ;
+  const toLabel = zones.find(z => z.tz === toTZ)?.label || toTZ;
+  const diffH = (toOffset - fromOffset) / 60;
+
+  document.getElementById('fromLabel').textContent = `Converted from ${fromLabel}`;
+  document.getElementById('convertedTime').textContent = result;
+  document.getElementById('diffLabel').textContent = `Time difference: ${diffH >= 0 ? '+' : ''}${diffH} hours`;
+  document.getElementById('resultBox').classList.add('show');
+}
+
+function getOffset(tz, date) {
+  const utcStr = date.toLocaleString('en-US', { timeZone: 'UTC' });
+  const tzStr = date.toLocaleString('en-US', { timeZone: tz });
+  return (new Date(tzStr) - new Date(utcStr)) / 60000;
+}
+
+function swapZones() {
+  const tmp = fromSel.value; fromSel.value = toSel.value; toSel.value = tmp;
+}
+
+// World clock
+const clockZones = zones.slice(0, 12);
+function updateClock() {
+  const container = document.getElementById('worldClock');
+  container.innerHTML = '';
+  clockZones.forEach(z => {
+    const now = new Date().toLocaleString('en-US', { timeZone: z.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true });
+    const dayDate = new Date().toLocaleDateString('en-US', { timeZone: z.tz, weekday:'short', month:'short', day:'numeric' });
+    container.innerHTML += `
+      <div style="background:#f8f9fc; border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:0.78rem; color:var(--text-light); margin-bottom:4px;">${z.label}</div>
+        <div style="font-size:1.2rem; font-weight:700; font-family:monospace; color:var(--text-dark);">${now}</div>
+        <div style="font-size:0.74rem; color:var(--text-light); margin-top:2px;">${dayDate}</div>
+      </div>`;
+  });
+}
+updateClock();
+setInterval(updateClock, 1000);
+setNow();
+</script>
+</body>
+</html>
