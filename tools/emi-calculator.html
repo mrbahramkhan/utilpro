@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan EMI Calculator — Free Monthly EMI Calculator | UtilPro</title>
+  <meta name="description" content="Calculate your loan EMI (Equated Monthly Installment) for home loan, car loan, or personal loan. Get instant results with full amortization breakdown.">
+  <meta name="keywords" content="EMI calculator, loan calculator, home loan EMI, car loan calculator, personal loan EMI, Pakistan loan calculator">
+  <link rel="canonical" href="https://utilpro.net/tools/emi-calculator.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/improvements.css">
+  <link rel="stylesheet" href="../css/lang-theme.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Loan EMI Calculator","url":"https://utilpro.net/tools/emi-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+</head>
+<body>
+
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html" class="logo"><div class="logo-icon">🛠️</div>Util<span>Pro</span></a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="index.html" class="active">Tools</a>
+        <a href="../blog/index.html">Guides</a>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Mobile Language & Theme Quick Select -->
+    <div class="mobile-controls">
+      <button class="mobile-lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ur')">🇵🇰 UR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ar')">🇸🇦 AR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('hi')">🇮🇳 HI</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('fr')">🇫🇷 FR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('zh')">🇨🇳 ZH</button>
+    </div>
+    <div class="mobile-controls" style="flex-wrap:wrap;">
+      <button class="mobile-lang-btn" onclick="setTheme('light')">☀️ Light</button>
+      <button class="mobile-lang-btn" onclick="setTheme('dark')">🌙 Dark</button>
+      <button class="mobile-lang-btn" onclick="setTheme('ocean')">🌊 Ocean</button>
+      <button class="mobile-lang-btn" onclick="setTheme('forest')">🌿 Forest</button>
+      <button class="mobile-lang-btn" onclick="setTheme('sunset')">🌅 Sunset</button>
+      <button class="mobile-lang-btn" onclick="setTheme('purple')">🔮 Purple</button>
+      <button class="mobile-lang-btn" onclick="setTheme('contrast')">⚡ Contrast</button>
+    </div>
+
+    <a href="../index.html">🏠 Home</a>
+    <a href="index.html">🔧 Tools</a>
+    <a href="../blog/index.html">📄 Guides</a>
+  </div>
+</header>
+
+<div class="tool-header">
+  <div class="tool-container">
+    <div class="breadcrumb" style="margin-bottom:12px;">
+      <a href="../index.html" style="color:rgba(255,255,255,0.65);">Home</a>
+      <span style="color:rgba(255,255,255,0.4);">/</span>
+      <a href="index.html" style="color:rgba(255,255,255,0.65);">Tools</a>
+      <span style="color:rgba(255,255,255,0.4);">/</span>
+      <span style="color:#fff;">EMI Calculator</span>
+    </div>
+    <h1>💰 Loan EMI Calculator</h1>
+    <p>Calculate your monthly EMI for any loan type. Free, instant, and accurate.</p>
+  </div>
+</div>
+
+<div class="tool-body">
+  <div class="tool-container">
+
+    <!-- AD SLOT -->
+    <div class="ad-slot ad-slot-horizontal" style="margin-bottom:28px;">
+      <!-- Google AdSense 728x90 -->
+      <div>📢 Advertisement</div>
+    </div>
+
+    <div class="tool-card-main">
+      <h2 style="margin-bottom:24px; font-size:1.2rem;">Enter Loan Details</h2>
+
+      <div class="form-group">
+        <label for="loanType">Loan Type</label>
+        <select id="loanType" onchange="setLoanType()">
+          <option value="">-- Select Loan Type --</option>
+          <option value="home">Home Loan</option>
+          <option value="car">Car Loan</option>
+          <option value="personal">Personal Loan</option>
+          <option value="education">Education Loan</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label for="principal">Loan Amount (PKR / Currency)</label>
+          <input type="number" id="principal" placeholder="e.g. 1000000" min="1000" max="100000000">
+        </div>
+        <div class="form-group">
+          <label for="rate">Annual Interest Rate (%)</label>
+          <input type="number" id="rate" placeholder="e.g. 12.5" step="0.1" min="0.1" max="50">
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label for="tenure">Loan Tenure</label>
+          <input type="number" id="tenure" placeholder="e.g. 5" min="1" max="360">
+        </div>
+        <div class="form-group">
+          <label for="tenureType">Tenure In</label>
+          <select id="tenureType">
+            <option value="years">Years</option>
+            <option value="months">Months</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="error-msg" id="errorMsg">⚠️ Please fill in all fields with valid values.</div>
+
+      <button class="btn btn-primary btn-lg" onclick="calculateEMI()" style="width:100%; justify-content:center; margin-top:8px;">
+        📊 Calculate EMI
+      </button>
+
+      <!-- RESULT -->
+      <div class="result-box" id="resultBox">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+          <h3 style="margin:0;">✅ EMI Calculation Result</h3>
+          <button class="copy-btn" id="copyBtn" onclick="copyResult()">📋 Copy Result</button>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-item">
+            <strong id="emiAmount">—</strong>
+            <span>Monthly EMI</span>
+          </div>
+          <div class="result-item">
+            <strong id="totalInterest">—</strong>
+            <span>Total Interest</span>
+          </div>
+          <div class="result-item">
+            <strong id="totalAmount">—</strong>
+            <span>Total Payable</span>
+          </div>
+        </div>
+
+        <!-- Breakdown bar -->
+        <div style="margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:5px; color:var(--text-mid);">
+            <span>Principal</span>
+            <span id="principalPct">—</span>
+          </div>
+          <div style="background:#e2e8f0; border-radius:8px; height:10px; overflow:hidden;">
+            <div id="principalBar" style="height:100%; background:var(--primary); border-radius:8px; transition:width 0.8s ease;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin:8px 0 5px; color:var(--text-mid);">
+            <span>Interest</span>
+            <span id="interestPct">—</span>
+          </div>
+          <div style="background:#e2e8f0; border-radius:8px; height:10px; overflow:hidden;">
+            <div id="interestBar" style="height:100%; background:#ea4335; border-radius:8px; transition:width 0.8s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Amortization Table toggle -->
+        <button onclick="toggleAmortization()" class="btn btn-outline btn-sm" style="margin-top:18px;">
+          📋 Show Amortization Schedule
+        </button>
+
+        <div id="amortizationSection" style="display:none; margin-top:20px;">
+          <h4 style="margin-bottom:12px;">Yearly Amortization Schedule</h4>
+          <div style="overflow-x:auto;">
+            <table id="amortTable" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <thead>
+                <tr style="background:var(--primary); color:#fff;">
+                  <th style="padding:10px 12px; text-align:left;">Year</th>
+                  <th style="padding:10px 12px; text-align:right;">Principal Paid</th>
+                  <th style="padding:10px 12px; text-align:right;">Interest Paid</th>
+                  <th style="padding:10px 12px; text-align:right;">Balance</th>
+                </tr>
+              </thead>
+              <tbody id="amortBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO BOX -->
+    <div class="tool-card-main" style="margin-top:24px;">
+      <h3>📚 How EMI is Calculated</h3>
+      <p>EMI (Equated Monthly Installment) is calculated using the formula:</p>
+      <div style="background:#f8f9fc; border:1px solid var(--border); border-radius:8px; padding:16px; font-family:monospace; margin:12px 0; overflow-x:auto;">
+        EMI = P × r × (1 + r)^n / [(1 + r)^n – 1]
+      </div>
+      <p style="font-size:0.9rem; color:var(--text-mid);">
+        Where <strong>P</strong> = Loan Amount, <strong>r</strong> = Monthly Interest Rate (Annual Rate ÷ 12 ÷ 100), <strong>n</strong> = Number of Monthly Installments
+      </p>
+      <h4 style="margin-top:20px; margin-bottom:10px;">Common Loan Interest Rates in Pakistan (2026)</h4>
+      <div class="row-3" style="gap:12px;">
+        <div style="background:#f0fdf4; border-radius:8px; padding:14px; text-align:center;">
+          <strong style="display:block; color:#059669;">17–22%</strong>
+          <span style="font-size:0.8rem; color:var(--text-light);">Personal Loan</span>
+        </div>
+        <div style="background:#eff6ff; border-radius:8px; padding:14px; text-align:center;">
+          <strong style="display:block; color:var(--primary);">14–18%</strong>
+          <span style="font-size:0.8rem; color:var(--text-light);">Car Loan</span>
+        </div>
+        <div style="background:#fef3c7; border-radius:8px; padding:14px; text-align:center;">
+          <strong style="display:block; color:#d97706;">12–16%</strong>
+          <span style="font-size:0.8rem; color:var(--text-light);">Home Loan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AD SLOT -->
+    <div class="ad-slot ad-slot-horizontal" style="margin-top:24px;">
+      <!-- Google AdSense 300x250 -->
+      <div>📢 Advertisement</div>
+    </div>
+
+    <!-- RELATED TOOLS -->
+    <div style="margin-top:28px;">
+      <h3 style="margin-bottom:16px;">🔗 Related Tools</h3>
+      <div class="tools-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        <a href="age-calculator.html" style="text-decoration:none;">
+          <div class="tool-card"><div class="tool-icon icon-blue">🎂</div><h3>Age Calculator</h3></div>
+        </a>
+        <a href="percentage-calculator.html" style="text-decoration:none;">
+          <div class="tool-card"><div class="tool-icon icon-purple">%</div><h3>Percentage Calculator</h3></div>
+        </a>
+        <a href="currency-converter.html" style="text-decoration:none;">
+          <div class="tool-card"><div class="tool-icon icon-cyan">💱</div><h3>Currency Converter</h3></div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <p>© 2026 UtilPro — Free EMI Calculator | <a href="../index.html" style="color:rgba(255,255,255,0.6);">Home</a> | <a href="index.html" style="color:rgba(255,255,255,0.6);">Tools</a></p>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+<script src="../js/main.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/themes.js"></script>
+<script src="../js/ads.js"></script>
+<script src="../js/performance.js"></script>
+<script>
+function setLoanType() {
+  const type = document.getElementById('loanType').value;
+  const rateMap = { home: 14, car: 16, personal: 20, education: 12 };
+  const tenureMap = { home: 20, car: 5, personal: 3, education: 5 };
+  if (rateMap[type]) {
+    document.getElementById('rate').value = rateMap[type];
+    document.getElementById('tenure').value = tenureMap[type];
+    document.getElementById('tenureType').value = 'years';
+  }
+}
+
+function calculateEMI() {
+  const P = parseFloat(document.getElementById('principal').value);
+  const annualRate = parseFloat(document.getElementById('rate').value);
+  const tenureVal = parseFloat(document.getElementById('tenure').value);
+  const tenureType = document.getElementById('tenureType').value;
+  const errorMsg = document.getElementById('errorMsg');
+  const resultBox = document.getElementById('resultBox');
+
+  errorMsg.classList.remove('show');
+  resultBox.classList.remove('show');
+
+  if (!P || !annualRate || !tenureVal || P <= 0 || annualRate <= 0 || tenureVal <= 0) {
+    errorMsg.classList.add('show');
+    return;
+  }
+
+  const n = tenureType === 'years' ? tenureVal * 12 : tenureVal;
+  const r = annualRate / 12 / 100;
+  const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  const totalPayable = emi * n;
+  const totalInterest = totalPayable - P;
+  const principalPct = (P / totalPayable * 100).toFixed(1);
+  const interestPct = (totalInterest / totalPayable * 100).toFixed(1);
+
+  document.getElementById('emiAmount').textContent = '₨ ' + formatNum(emi);
+  document.getElementById('totalInterest').textContent = '₨ ' + formatNum(totalInterest);
+  document.getElementById('totalAmount').textContent = '₨ ' + formatNum(totalPayable);
+  document.getElementById('principalPct').textContent = principalPct + '%';
+  document.getElementById('interestPct').textContent = interestPct + '%';
+
+  setTimeout(() => {
+    document.getElementById('principalBar').style.width = principalPct + '%';
+    document.getElementById('interestBar').style.width = interestPct + '%';
+  }, 100);
+
+  // Build amortization data
+  window._emiData = { P, r, n, emi };
+  resultBox.classList.add('show');
+  resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleAmortization() {
+  const section = document.getElementById('amortizationSection');
+  if (section.style.display === 'none') {
+    buildAmortization();
+    section.style.display = 'block';
+  } else {
+    section.style.display = 'none';
+  }
+}
+
+function buildAmortization() {
+  const { P, r, n, emi } = window._emiData;
+  let balance = P;
+  const tbody = document.getElementById('amortBody');
+  tbody.innerHTML = '';
+  const years = Math.ceil(n / 12);
+
+  for (let y = 1; y <= years; y++) {
+    let yearPrincipal = 0, yearInterest = 0;
+    const months = Math.min(12, n - (y - 1) * 12);
+    for (let m = 0; m < months; m++) {
+      const interest = balance * r;
+      const principal = Math.min(emi - interest, balance);
+      yearInterest += interest;
+      yearPrincipal += principal;
+      balance = Math.max(0, balance - principal);
+    }
+    const tr = document.createElement('tr');
+    tr.style.background = y % 2 === 0 ? '#f8f9fc' : '#fff';
+    tr.innerHTML = `
+      <td style="padding:9px 12px;">Year ${y}</td>
+      <td style="padding:9px 12px; text-align:right;">₨ ${formatNum(yearPrincipal)}</td>
+      <td style="padding:9px 12px; text-align:right; color:#ea4335;">₨ ${formatNum(yearInterest)}</td>
+      <td style="padding:9px 12px; text-align:right;">₨ ${formatNum(Math.max(0,balance))}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function copyResult() {
+  const emi = document.getElementById('emiAmount').textContent;
+  const interest = document.getElementById('totalInterest').textContent;
+  const total = document.getElementById('totalAmount').textContent;
+  const text = `Loan EMI Calculation (UtilPro)\nMonthly EMI: ${emi}\nTotal Interest: ${interest}\nTotal Payable: ${total}`;
+  copyToClipboard(text, document.getElementById('copyBtn'));
+}
+</script>
+</body>
+</html>
