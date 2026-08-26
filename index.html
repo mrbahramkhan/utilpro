@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UtilPro - Free Online Tools, Calculators & How-To Guides</title>
+  <meta name="description" content="UtilPro offers 10+ free online tools including Age Calculator, EMI Calculator, BMI Calculator, Password Generator, and 20+ expert guides for mobile fixes, government services & tech help.">
+  <meta name="keywords" content="online tools, age calculator, EMI calculator, BMI calculator, password generator, mobile fix, Pakistan government services, tech guides">
+  <meta property="og:title" content="UtilPro - Free Online Tools & Guides">
+  <meta property="og:description" content="Free calculators, converters, and expert guides for everyday problems. No login required.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://utilpro.net">
+  <link rel="canonical" href="https://utilpro.net/">
+  <meta property="og:title" content="UtilPro - Free Online Tools & Guides">
+  <meta property="og:description" content="10+ free calculators and 20+ how-to guides. Age, EMI, BMI, Password, Currency tools. Mobile fix, Govt services Pakistan, Tech help.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://utilpro.net/">
+  <meta property="og:image" content="https://utilpro.net/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UtilPro - Free Online Tools">
+  <meta name="twitter:description" content="Free calculators, converters & step-by-step guides.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/improvements.css">
+  <link rel="stylesheet" href="css/lang-theme.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"UtilPro","url":"https://utilpro.net","description":"Free online tools and guides","potentialAction":{"@type":"SearchAction","target":"https://utilpro.net/search.html?q={search_term_string}","query-input":"required name=search_term_string"}}
+  </script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🛠️</div>
+        Util<span>Pro</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="active" data-i18n="nav_home">Home</a>
+        <a href="tools/index.html" data-i18n="nav_tools">Tools</a>
+        <a href="blog/index.html" data-i18n="nav_guides">Guides</a>
+        <a href="blog/mobile-fix/index.html">Mobile Fix</a>
+        <a href="blog/govt-services/index.html">Govt Services</a>
+        <a href="blog/education/index.html">Education</a>
+        <a href="blog/tech-fix/index.html">Tech Fix</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Mobile Language & Theme Quick Select -->
+    <div class="mobile-controls">
+      <button class="mobile-lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ur')">🇵🇰 UR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ar')">🇸🇦 AR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('hi')">🇮🇳 HI</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('fr')">🇫🇷 FR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('zh')">🇨🇳 ZH</button>
+    </div>
+    <div class="mobile-controls" style="flex-wrap:wrap;">
+      <button class="mobile-lang-btn" onclick="setTheme('light')">☀️ Light</button>
+      <button class="mobile-lang-btn" onclick="setTheme('dark')">🌙 Dark</button>
+      <button class="mobile-lang-btn" onclick="setTheme('ocean')">🌊 Ocean</button>
+      <button class="mobile-lang-btn" onclick="setTheme('forest')">🌿 Forest</button>
+      <button class="mobile-lang-btn" onclick="setTheme('sunset')">🌅 Sunset</button>
+      <button class="mobile-lang-btn" onclick="setTheme('purple')">🔮 Purple</button>
+      <button class="mobile-lang-btn" onclick="setTheme('contrast')">⚡ Contrast</button>
+    </div>
+
+    <a href="index.html">🏠 <span data-i18n="nav_home">Home</span></a>
+    <a href="tools/index.html">🔧 <span data-i18n="nav_tools">Tools</span></a>
+    <a href="blog/index.html">📄 <span data-i18n="nav_guides">All Guides</span></a>
+    <a href="blog/mobile-fix/index.html">📱 Mobile Fix</a>
+    <a href="blog/govt-services/index.html">🏛️ Govt Services</a>
+    <a href="blog/education/index.html">🎓 Education</a>
+    <a href="blog/tech-fix/index.html">💻 Tech Fix</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">✨ <span data-i18n="hero_badge">100% Free — No Login Required</span></div>
+      <h1><span data-i18n="hero_title">Your All-in-One Online Utility Hub</span></h1>
+      <p><span data-i18n="hero_desc">Free calculators, converters, and step-by-step guides for everyday problems — from loan EMIs to government services in Pakistan.</span></p>
+      <div class="hero-btns">
+        <a href="tools/index.html" class="btn btn-lg hero-btn-white"><span data-i18n="hero_btn_tools">🔧 Explore Tools</span></a>
+        <a href="blog/index.html" class="btn btn-lg hero-btn-outline"><span data-i18n="hero_btn_guides">📖 Read Guides</span></a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>10+</strong><span data-i18n="stat_tools">Free Tools</span></div>
+        <div class="hero-stat"><strong>20+</strong><span data-i18n="stat_guides">Expert Guides</span></div>
+        <div class="hero-stat"><strong>0</strong><span data-i18n="stat_signup">Signups Needed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="container">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" data-i18n-ph="search_placeholder" placeholder="Search tools or guides (e.g. &quot;EMI calculator&quot;, &quot;WhatsApp OTP fix&quot;)...">
+      <button id="searchBtn">Search</button>
+    </div>
+  </div>
+</div>
+
+<!-- AD SLOT - TOP BANNER -->
+<div class="container">
+  <div class="ad-slot ad-slot-horizontal" style="margin-top:24px;">
+    <!-- Google AdSense: ca-pub-XXXXXXXX / Leaderboard 728x90 -->
+    <div>📢 Advertisement</div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label"><span data-i18n="browse_cat">Browse by Category</span></span>
+      <h2><span data-i18n="whats_looking">What Are You Looking For?</span></h2>
+      <p>From quick calculations to detailed how-to guides — we've got you covered.</p>
+    </div>
+    <div class="categories-grid">
+      <a href="tools/index.html" class="cat-card" style="text-decoration:none; color:inherit;">
+        <div class="cat-emoji">🔧</div>
+        <h4>Free Tools</h4>
+        <span>10 calculators & converters</span>
+      </a>
+      <a href="blog/mobile-fix/index.html" class="cat-card" style="text-decoration:none; color:inherit;">
+        <div class="cat-emoji">📱</div>
+        <h4>Mobile Fix</h4>
+        <span>5 phone problem guides</span>
+      </a>
+      <a href="blog/govt-services/index.html" class="cat-card" style="text-decoration:none; color:inherit;">
+        <div class="cat-emoji">🏛️</div>
+        <h4>Govt Services</h4>
+        <span>5 Pakistan service guides</span>
+      </a>
+      <a href="blog/tech-fix/index.html" class="cat-card" style="text-decoration:none; color:inherit;">
+        <div class="cat-emoji">💻</div>
+        <h4>Tech Fix</h4>
+        <span>5 device repair guides</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS SECTION -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Free Online Tools</span>
+      <h2>Calculators & Converters</h2>
+      <p>Instant results — no signup, no ads popup, no nonsense.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-icon icon-blue">🎂</div>
+        <h3><span data-i18n="tool_age">Age Calculator</span></h3>
+        <p>Find your exact age in years, months, and days from your date of birth.</p>
+        <a href="tools/age-calculator.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-green">💰</div>
+        <h3><span data-i18n="tool_emi">Loan EMI Calculator</span></h3>
+        <p>Calculate monthly EMI for home, car, or personal loans instantly.</p>
+        <a href="tools/emi-calculator.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-orange">⚖️</div>
+        <h3><span data-i18n="tool_bmi">BMI Calculator</span></h3>
+        <p>Check your Body Mass Index and get a health category assessment.</p>
+        <a href="tools/bmi-calculator.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-purple">%</div>
+        <h3><span data-i18n="tool_percent">Percentage Calculator</span></h3>
+        <p>Calculate percentages, discounts, markups and percentage changes easily.</p>
+        <a href="tools/percentage-calculator.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-teal">🌍</div>
+        <h3><span data-i18n="tool_timezone">Time Zone Converter</span></h3>
+        <p>Convert time between major world cities and time zones instantly.</p>
+        <a href="tools/timezone-converter.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-red">🔑</div>
+        <h3><span data-i18n="tool_password">Password Generator</span></h3>
+        <p>Create strong, random passwords with custom length and character sets.</p>
+        <a href="tools/password-generator.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-yellow">📐</div>
+        <h3><span data-i18n="tool_unit">Unit Converter</span></h3>
+        <p>Convert weight, length, temperature, volume and more across all units.</p>
+        <a href="tools/unit-converter.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-indigo">📅</div>
+        <h3><span data-i18n="tool_date">Date Difference Calculator</span></h3>
+        <p>Find the exact number of days, weeks, or months between two dates.</p>
+        <a href="tools/date-difference.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-cyan">💱</div>
+        <h3><span data-i18n="tool_currency">Currency Converter</span></h3>
+        <p>Convert PKR, USD, EUR, GBP, AED and 10+ currencies with reference rates.</p>
+        <a href="tools/currency-converter.html" class="tool-link">Open Tool →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-pink">📄</div>
+        <h3><span data-i18n="tool_pdf">PDF Tools</span></h3>
+        <p>Merge, split, compress, and convert PDF files — all in your browser.</p>
+        <a href="tools/pdf-tools.html" class="tool-link">Open Tool →</a>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="tools/index.html" class="btn btn-outline">View All Tools →</a>
+    </div>
+  </div>
+</section>
+
+<!-- AD SLOT - MID PAGE -->
+<div class="container">
+  <div class="ad-slot ad-slot-horizontal">
+    <!-- Google AdSense: ca-pub-XXXXXXXX / Rectangle 336x280 -->
+    <div>📢 Advertisement</div>
+  </div>
+</div>
+
+<!-- BLOG SECTION -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Expert Guides</span>
+      <h2>Step-by-Step How-To Articles</h2>
+      <p>Verified solutions written in simple language — no tech jargon.</p>
+    </div>
+
+    <!-- MOBILE FIX -->
+    <div class="mb-3">
+      <div class="flex" style="align-items:center; justify-content:space-between; margin-bottom:18px;">
+        <h3 style="margin:0;">📱 Mobile Fix Guides</h3>
+        <a href="blog/mobile-fix/index.html" style="font-size:0.88rem; font-weight:600;">View All →</a>
+      </div>
+      <div class="blog-grid">
+        <div class="blog-card">
+          <div class="blog-card-top cat-mobile"></div>
+          <div class="blog-card-cat"><span class="badge badge-blue">Mobile Fix</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/mobile-fix/whatsapp-otp-not-received.html">WhatsApp OTP Not Received? 10 Proven Fixes (2026)</a></h3>
+            <p>Complete guide to fix WhatsApp verification code not coming on Android and iPhone.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 5 min read</div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-top cat-mobile"></div>
+          <div class="blog-card-cat"><span class="badge badge-blue">Mobile Fix</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/mobile-fix/android-phone-slow-fix.html">Android Phone Running Slow? Speed It Up in 10 Steps</a></h3>
+            <p>Fix lag, freezing, and slow performance on any Android phone without factory reset.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 6 min read</div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-top cat-mobile"></div>
+          <div class="blog-card-cat"><span class="badge badge-blue">Mobile Fix</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/mobile-fix/mobile-data-not-working.html">Mobile Data Not Working? Fix It in Minutes</a></h3>
+            <p>Step-by-step solutions for 4G/5G data not working on Android and iOS devices.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 4 min read</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOVT SERVICES -->
+    <div class="mb-3 mt-4">
+      <div class="flex" style="align-items:center; justify-content:space-between; margin-bottom:18px;">
+        <h3 style="margin:0;">🏛️ Pakistan Govt Service Guides</h3>
+        <a href="blog/govt-services/index.html" style="font-size:0.88rem; font-weight:600;">View All →</a>
+      </div>
+      <div class="blog-grid">
+        <div class="blog-card">
+          <div class="blog-card-top cat-govt"></div>
+          <div class="blog-card-cat"><span class="badge badge-green">Govt Services</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/govt-services/cnic-verification-nadra.html">CNIC Verification Online via NADRA — Complete Guide</a></h3>
+            <p>How to verify your CNIC number online through NADRA's official portal in Pakistan.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 3 min read</div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-top cat-govt"></div>
+          <div class="blog-card-cat"><span class="badge badge-green">Govt Services</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/govt-services/bisp-payment-check.html">How to Check BISP Payment Online — SMS & App Method</a></h3>
+            <p>Check your Benazir Income Support Programme payment status via SMS, app and website.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 4 min read</div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-top cat-govt"></div>
+          <div class="blog-card-cat"><span class="badge badge-green">Govt Services</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/govt-services/electricity-bill-online.html">How to Check Electricity Bill Online in Pakistan</a></h3>
+            <p>Check LESCO, IESCO, FESCO, MEPCO and other electricity bills online in seconds.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 3 min read</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECH FIX -->
+    <div class="mt-4">
+      <div class="flex" style="align-items:center; justify-content:space-between; margin-bottom:18px;">
+        <h3 style="margin:0;">💻 Tech Fix Guides</h3>
+        <a href="blog/tech-fix/index.html" style="font-size:0.88rem; font-weight:600;">View All →</a>
+      </div>
+      <div class="blog-grid">
+        <div class="blog-card">
+          <div class="blog-card-top cat-tech"></div>
+          <div class="blog-card-cat"><span class="badge" style="background:#fee2e2;color:#b91c1c;">Tech Fix</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/tech-fix/laptop-slow-windows-11.html">Laptop Running Slow on Windows 11? 12 Easy Fixes</a></h3>
+            <p>Speed up your Windows 11 laptop with these proven optimization tips — no reinstall needed.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 7 min read</div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-top cat-tech"></div>
+          <div class="blog-card-cat"><span class="badge" style="background:#fee2e2;color:#b91c1c;">Tech Fix</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/tech-fix/wifi-connected-no-internet.html">WiFi Connected But No Internet? Fix It Now</a></h3>
+            <p>Solve the "connected, no internet" error on Windows, Android and iOS with these steps.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 5 min read</div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-top cat-tech"></div>
+          <div class="blog-card-cat"><span class="badge" style="background:#fee2e2;color:#b91c1c;">Tech Fix</span></div>
+          <div class="blog-card-body">
+            <h3><a href="blog/tech-fix/phone-overheating.html">Phone Overheating? 10 Causes & Instant Fixes</a></h3>
+            <p>Stop your phone from getting too hot with these simple cooling solutions and prevention tips.</p>
+            <div class="blog-card-meta">📅 2026 &bull; ⏱ 5 min read</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="blog/index.html" class="btn btn-primary">View All 20 Guides →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA HIGHLIGHT -->
+<section class="section">
+  <div class="container">
+    <div class="highlight-box">
+      <h2>Need a Quick Calculation?</h2>
+      <p style="max-width:480px; margin:0 auto 28px;">All our tools are 100% free, work on mobile, and don't require any account or personal data.</p>
+      <a href="tools/index.html" class="btn btn-lg hero-btn-white">Open Free Tools →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:12px;">🛠️ Util<span style="color:rgba(255,255,255,0.6)">Pro</span></div>
+        <p>Free online tools, calculators, and expert guides to solve everyday problems. No login, no fees, no nonsense.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Free Tools</h5>
+        <ul>
+          <li><a href="tools/age-calculator.html">Age Calculator</a></li>
+          <li><a href="tools/emi-calculator.html">EMI Calculator</a></li>
+          <li><a href="tools/bmi-calculator.html">BMI Calculator</a></li>
+          <li><a href="tools/password-generator.html">Password Generator</a></li>
+          <li><a href="tools/currency-converter.html">Currency Converter</a></li>
+          <li><a href="tools/index.html">All Tools →</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Guides</h5>
+        <ul>
+          <li><a href="blog/mobile-fix/index.html">Mobile Fix</a></li>
+          <li><a href="blog/govt-services/index.html">Govt Services PK</a></li>
+          <li><a href="blog/education/index.html">Education</a></li>
+          <li><a href="blog/tech-fix/index.html">Tech Fix</a></li>
+          <li><a href="blog/index.html">All Guides →</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Site</h5>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 UtilPro. All rights reserved. Free tools for everyone.</p>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="contact.html">Contact</a>
+        <a href="sitemap.xml">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" title="Back to top">↑</button>
+
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/themes.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/performance.js"></script>
+</body>
+</html>
