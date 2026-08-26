@@ -2,54 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Homepage -->
-  <url><loc>https://utilpro.net/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
 
   <!-- Tools -->
-  <url><loc>https://utilpro.net/tools/</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://utilpro.net/tools/age-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/emi-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/bmi-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/percentage-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/timezone-converter.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/password-generator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/unit-converter.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/date-difference.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/currency-converter.html</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/tools/pdf-tools.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/age-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/emi-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/bmi-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/percentage-calculator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/timezone-converter.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/password-generator.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/unit-converter.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/date-difference.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/currency-converter.html</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/tools/pdf-tools.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Blog Index -->
-  <url><loc>https://utilpro.net/blog/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
 
   <!-- Mobile Fix -->
-  <url><loc>https://utilpro.net/blog/mobile-fix/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/mobile-fix/whatsapp-otp-not-received.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/mobile-fix/android-phone-slow-fix.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/mobile-fix/mobile-data-not-working.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/mobile-fix/instagram-login-problem.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/mobile-fix/facebook-account-locked.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/mobile-fix/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/mobile-fix/whatsapp-otp-not-received.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/mobile-fix/android-phone-slow-fix.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/mobile-fix/mobile-data-not-working.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/mobile-fix/instagram-login-problem.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/mobile-fix/facebook-account-locked.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Govt Services -->
-  <url><loc>https://utilpro.net/blog/govt-services/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/govt-services/cnic-verification-nadra.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/govt-services/bisp-payment-check.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/govt-services/passport-tracking-pakistan.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/govt-services/electricity-bill-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/govt-services/gas-bill-duplicate.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/govt-services/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/govt-services/cnic-verification-nadra.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/govt-services/bisp-payment-check.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/govt-services/passport-tracking-pakistan.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/govt-services/electricity-bill-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/govt-services/gas-bill-duplicate.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Education -->
-  <url><loc>https://utilpro.net/blog/education/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/education/bise-result-check.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/education/class-9-past-papers.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/education/scholarship-list-pakistan-2026.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/education/university-admission-dates.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/education/online-study-notes.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/education/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/education/bise-result-check.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/education/class-9-past-papers.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/education/scholarship-list-pakistan-2026.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/education/university-admission-dates.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/education/online-study-notes.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Tech Fix -->
-  <url><loc>https://utilpro.net/blog/tech-fix/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/tech-fix/laptop-slow-windows-11.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/tech-fix/app-not-opening-crash.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/tech-fix/whatsapp-backup-restore.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://utilpro.net/blog/tech-fix/wifi-connected-no-internet.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://utilpro.net/blog/tech-fix/phone-overheating.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/tech-fix/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/tech-fix/laptop-slow-windows-11.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/tech-fix/app-not-opening-crash.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/tech-fix/whatsapp-backup-restore.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/tech-fix/wifi-connected-no-internet.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mrbahramkhan.github.io/utilpro-site/blog/tech-fix/phone-overheating.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
 </urlset>
