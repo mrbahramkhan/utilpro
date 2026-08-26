@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact UtilPro — Get in Touch</title>
+  <meta name="description" content="Contact UtilPro for feedback, bug reports, content suggestions, or advertising inquiries.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/improvements.css">
+  <link rel="stylesheet" href="css/lang-theme.css">
+</head>
+<body>
+<header class="header"><div class="container"><nav class="nav">
+  <a href="index.html" class="logo"><div class="logo-icon">🛠️</div>Util<span>Pro</span></a>
+  <div class="nav-links"><a href="index.html">Home</a><a href="tools/index.html">Tools</a><a href="blog/index.html">Guides</a></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav></div>
+<div class="mobile-menu" id="mobileMenu">
+    <!-- Mobile Language & Theme Quick Select -->
+    <div class="mobile-controls">
+      <button class="mobile-lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ur')">🇵🇰 UR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ar')">🇸🇦 AR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('hi')">🇮🇳 HI</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('fr')">🇫🇷 FR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('zh')">🇨🇳 ZH</button>
+    </div>
+    <div class="mobile-controls" style="flex-wrap:wrap;">
+      <button class="mobile-lang-btn" onclick="setTheme('light')">☀️ Light</button>
+      <button class="mobile-lang-btn" onclick="setTheme('dark')">🌙 Dark</button>
+      <button class="mobile-lang-btn" onclick="setTheme('ocean')">🌊 Ocean</button>
+      <button class="mobile-lang-btn" onclick="setTheme('forest')">🌿 Forest</button>
+      <button class="mobile-lang-btn" onclick="setTheme('sunset')">🌅 Sunset</button>
+      <button class="mobile-lang-btn" onclick="setTheme('purple')">🔮 Purple</button>
+      <button class="mobile-lang-btn" onclick="setTheme('contrast')">⚡ Contrast</button>
+    </div>
+<a href="index.html">Home</a></div>
+</header>
+<section style="background:linear-gradient(135deg,#1a73e8,#0d47a1); padding:48px 0; color:#fff;">
+  <div class="container"><h1 style="color:#fff;">Contact Us</h1><p style="color:rgba(255,255,255,0.8);">We'd love to hear from you.</p></div>
+</section>
+<section class="section"><div class="container-sm">
+  <div class="grid-2" style="gap:32px; align-items:start;">
+    <div>
+      <div class="tool-card-main">
+        <h2 style="margin-bottom:20px;">Send a Message</h2>
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="Enter your name"></div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select><option>Bug Report</option><option>Content Suggestion</option><option>Tool Request</option><option>Advertising</option><option>Other</option></select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea style="width:100%; padding:12px 16px; border:1.5px solid var(--border); border-radius:8px; font-size:0.95rem; min-height:120px; outline:none; resize:vertical;" placeholder="Describe your issue or suggestion..."></textarea></div>
+        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="this.textContent='✅ Message Sent!'; this.style.background='#34a853';">📨 Send Message</button>
+        <p style="font-size:0.8rem; color:var(--text-light); margin-top:10px; margin-bottom:0;">We typically respond within 24–48 hours.</p>
+      </div>
+    </div>
+    <div>
+      <div class="sidebar-widget" style="margin-bottom:16px;">
+        <h4>📧 Email</h4>
+        <p style="font-size:0.9rem; margin:0;">hello@utilpro.net</p>
+      </div>
+      <div class="sidebar-widget" style="margin-bottom:16px;">
+        <h4>🐛 Report a Bug</h4>
+        <p style="font-size:0.9rem; margin:0;">Found something broken? Use the contact form and select "Bug Report." Include the page URL and what went wrong.</p>
+      </div>
+      <div class="sidebar-widget" style="margin-bottom:16px;">
+        <h4>💡 Suggest a Tool</h4>
+        <p style="font-size:0.9rem; margin:0;">Have an idea for a tool you'd like us to build? Select "Tool Request" and describe what it should do.</p>
+      </div>
+      <div class="sidebar-widget">
+        <h4>📢 Advertising</h4>
+        <p style="font-size:0.9rem; margin:0;">For advertising inquiries, select "Advertising" and include your website and campaign details.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+<footer class="footer"><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><p>© 2026 UtilPro | <a href="index.html" style="color:rgba(255,255,255,0.6);">Home</a> | <a href="privacy.html" style="color:rgba(255,255,255,0.6);">Privacy Policy</a></p></div></div></footer>
+<button class="scroll-top" id="scrollTop">↑</button>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/themes.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/performance.js"></script>
+</body></html>
