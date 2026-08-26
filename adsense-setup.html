@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google AdSense Setup Guide — UtilPro</title>
+  <meta name="description" content="Step-by-step guide to configure Google AdSense on UtilPro website. Publisher ID setup, ad unit creation, placement strategy, and optimization tips.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/improvements.css">
+  <link rel="stylesheet" href="css/lang-theme.css">
+  <link rel="stylesheet" href="css/improvements.css">
+  <link rel="stylesheet" href="css/lang-theme.css">
+  <style>
+    .step-card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:28px; margin-bottom:20px; position:relative; }
+    .step-card .step-badge { position:absolute; top:-14px; left:24px; background:var(--primary); color:#fff; padding:4px 16px; border-radius:100px; font-size:0.78rem; font-weight:700; letter-spacing:0.05em; }
+    .code-block { background:#0f172a; color:#e2e8f0; padding:16px 20px; border-radius:10px; font-family:monospace; font-size:0.87rem; overflow-x:auto; margin:12px 0; position:relative; line-height:1.7; }
+    .code-block .copy-code-btn { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:6px; padding:4px 10px; font-size:0.75rem; cursor:pointer; }
+    .code-block .copy-code-btn:hover { background:rgba(255,255,255,0.2); }
+    .highlight { color:#60a5fa; } .hl-green { color:#86efac; } .hl-yellow { color:#fcd34d; } .hl-orange { color:#fdba74; }
+    .status-badge { display:inline-block; padding:3px 10px; border-radius:100px; font-size:0.75rem; font-weight:600; }
+    .status-ready { background:#dcfce7; color:#15803d; }
+    .status-todo { background:#fef3c7; color:#92400e; }
+    .status-important { background:#fee2e2; color:#b91c1c; }
+    .checklist { display:grid; gap:10px; margin:16px 0; }
+    .checklist-item { display:flex; gap:12px; align-items:flex-start; padding:12px 14px; background:#f8f9fc; border-radius:8px; }
+    .checklist-item input[type=checkbox] { width:18px; height:18px; accent-color:var(--primary); flex-shrink:0; margin-top:1px; }
+    .placement-card { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .placement-card-header { background:var(--primary); color:#fff; padding:12px 16px; font-weight:600; font-size:0.9rem; display:flex; justify-content:space-between; align-items:center; }
+    .placement-card-body { padding:16px; font-size:0.88rem; }
+    .earning-table { width:100%; border-collapse:collapse; font-size:0.87rem; }
+    .earning-table th { background:var(--primary); color:#fff; padding:10px 14px; text-align:left; }
+    .earning-table td { padding:9px 14px; border-bottom:1px solid var(--border); }
+    .earning-table tr:nth-child(even) td { background:#f8f9fc; }
+  </style>
+</head>
+<body>
+<header class="header"><div class="container"><nav class="nav">
+  <a href="index.html" class="logo"><div class="logo-icon">🛠️</div>Util<span>Pro</span></a>
+  <div class="nav-links"><a href="index.html">Home</a><a href="tools/index.html">Tools</a><a href="blog/index.html">Guides</a></div>
+</nav></div></header>
+
+<section style="background:linear-gradient(135deg,#f59e0b,#d97706); padding:52px 0; color:#fff;">
+  <div class="container">
+    <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.2); padding:6px 16px; border-radius:100px; font-size:0.82rem; font-weight:600; margin-bottom:18px;">💰 Monetization Guide</div>
+    <h1 style="color:#fff; margin-bottom:10px;">Google AdSense — Complete Setup Guide</h1>
+    <p style="color:rgba(255,255,255,0.88); max-width:580px;">Configure AdSense on UtilPro step by step. From applying to earning — everything you need to know.</p>
+  </div>
+</section>
+
+<section class="section"><div class="container">
+
+  <!-- QUICK STATUS PANEL -->
+  <div style="background:#fff; border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:32px;">
+    <h3 style="margin-bottom:16px;">📊 AdSense Setup Status</h3>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;">
+      <div style="padding:14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px;">
+        <div style="font-size:0.78rem; font-weight:700; color:#15803d; text-transform:uppercase; margin-bottom:4px;">✅ Ready</div>
+        <div style="font-weight:600; font-size:0.95rem;">Ad Slot Placeholders</div>
+        <div style="font-size:0.82rem; color:#166534; margin-top:2px;">All pages have ad divs built in</div>
+      </div>
+      <div style="padding:14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px;">
+        <div style="font-size:0.78rem; font-weight:700; color:#15803d; text-transform:uppercase; margin-bottom:4px;">✅ Ready</div>
+        <div style="font-weight:600; font-size:0.95rem;">AdSense-Friendly Layout</div>
+        <div style="font-size:0.82rem; color:#166534; margin-top:2px;">No popups, clean design</div>
+      </div>
+      <div style="padding:14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px;">
+        <div style="font-size:0.78rem; font-weight:700; color:#15803d; text-transform:uppercase; margin-bottom:4px;">✅ Ready</div>
+        <div style="font-weight:600; font-size:0.95rem;">Privacy Policy</div>
+        <div style="font-size:0.82rem; color:#166534; margin-top:2px;">privacy.html included</div>
+      </div>
+      <div style="padding:14px; background:#fef3c7; border:1px solid #fde68a; border-radius:10px;">
+        <div style="font-size:0.78rem; font-weight:700; color:#92400e; text-transform:uppercase; margin-bottom:4px;">⚠️ You Do This</div>
+        <div style="font-weight:600; font-size:0.95rem;">Apply for AdSense</div>
+        <div style="font-size:0.82rem; color:#92400e; margin-top:2px;">At adsense.google.com</div>
+      </div>
+      <div style="padding:14px; background:#fef3c7; border:1px solid #fde68a; border-radius:10px;">
+        <div style="font-size:0.78rem; font-weight:700; color:#92400e; text-transform:uppercase; margin-bottom:4px;">⚠️ You Do This</div>
+        <div style="font-weight:600; font-size:0.95rem;">Add Publisher ID</div>
+        <div style="font-size:0.82rem; color:#92400e; margin-top:2px;">In js/ads.js config</div>
+      </div>
+      <div style="padding:14px; background:#fef3c7; border:1px solid #fde68a; border-radius:10px;">
+        <div style="font-size:0.78rem; font-weight:700; color:#92400e; text-transform:uppercase; margin-bottom:4px;">⚠️ You Do This</div>
+        <div style="font-weight:600; font-size:0.95rem;">Create Ad Units</div>
+        <div style="font-size:0.82rem; color:#92400e; margin-top:2px;">In AdSense dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: APPLY -->
+  <div class="step-card">
+    <div class="step-badge">STEP 1</div>
+    <h2 style="margin-top:8px;">Apply for Google AdSense</h2>
+    <p>Before anything else, you need an approved AdSense account. Make sure your site is live and has content first.</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0;">
+      <div>
+        <h4 style="margin-bottom:10px; color:#15803d;">✅ Requirements You Already Meet</h4>
+        <ul style="margin-left:18px; list-style:disc;">
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Original content (20+ articles)</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Privacy Policy page (/privacy.html)</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Contact page (/contact.html)</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Clean, no-popup design</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Mobile responsive layout</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">About page (/about.html)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="margin-bottom:10px; color:#92400e;">⚠️ Do Before Applying</h4>
+        <ul style="margin-left:18px; list-style:disc;">
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Deploy site with a real domain (not localhost)</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Have at least 20–30 organic visitors/day</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Wait 2–3 weeks after publishing content</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Make sure site is indexed in Google</li>
+          <li style="margin-bottom:6px; color:var(--text-mid); font-size:0.9rem;">Add Google Search Console</li>
+        </ul>
+      </div>
+    </div>
+    <a href="https://adsense.google.com" target="_blank" rel="noopener" class="btn btn-primary">Apply at adsense.google.com →</a>
+  </div>
+
+  <!-- STEP 2: PUBLISHER ID -->
+  <div class="step-card">
+    <div class="step-badge">STEP 2</div>
+    <h2 style="margin-top:8px;">Add Your Publisher ID to Every Page</h2>
+    <p>After approval, Google gives you a <strong>Publisher ID</strong> (looks like <code>ca-pub-1234567890123456</code>). Add it in two places:</p>
+
+    <h4 style="margin:20px 0 10px;">Option A — Automatic (via js/ads.js)</h4>
+    <p style="font-size:0.9rem; color:var(--text-mid);">Open <code>js/ads.js</code> and update line 14:</p>
+    <div class="code-block">
+      <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+<span class="hl-green">// BEFORE (demo mode):</span>
+publisherId: <span class="hl-yellow">'ca-pub-XXXXXXXXXXXXXXXX'</span>,
+demoMode: <span class="hl-orange">true</span>,
+
+<span class="hl-green">// AFTER (production):</span>
+publisherId: <span class="hl-yellow">'ca-pub-1234567890123456'</span>,  <span class="hl-green">// ← your real ID</span>
+demoMode: <span class="hl-orange">false</span>,                           <span class="hl-green">// ← disable demo</span>
+    </div>
+
+    <h4 style="margin:20px 0 10px;">Option B — Manual (in each HTML &lt;head&gt;)</h4>
+    <p style="font-size:0.9rem; color:var(--text-mid);">Add this script to every page's <code>&lt;head&gt;</code> tag:</p>
+    <div class="code-block">
+      <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+<span class="highlight">&lt;script</span> async
+  src=<span class="hl-yellow">"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"</span>
+  crossorigin=<span class="hl-yellow">"anonymous"</span><span class="highlight">&gt;&lt;/script&gt;</span>
+    </div>
+
+    <div class="tip-box" style="margin-top:16px;"><p>✅ <strong>Fastest method:</strong> Add the script to your shared header snippet only once. The ads.js file already handles this automatically when <code>demoMode: false</code>.</p></div>
+  </div>
+
+  <!-- STEP 3: CREATE AD UNITS -->
+  <div class="step-card">
+    <div class="step-badge">STEP 3</div>
+    <h2 style="margin-top:8px;">Create Ad Units in AdSense Dashboard</h2>
+    <p>In AdSense, go to <strong>Ads → By ad unit → Create new ad unit</strong>. Create these 3 essential units:</p>
+
+    <div style="display:grid; gap:14px; margin:20px 0;">
+      <div class="placement-card">
+        <div class="placement-card-header">📰 Unit 1: Leaderboard (728×90) <span class="status-badge status-ready">Highest CTR</span></div>
+        <div class="placement-card-body">
+          <strong>Settings:</strong> Display ads → Responsive → Horizontal<br>
+          <strong>Used on:</strong> Top of every page below header<br>
+          <strong>Copy the Slot ID</strong> → paste in <code>ads.js → adUnits.leaderboard</code>
+        </div>
+      </div>
+      <div class="placement-card">
+        <div class="placement-card-header">⬛ Unit 2: Rectangle (300×250) <span class="status-badge status-ready">Best for Sidebar</span></div>
+        <div class="placement-card-body">
+          <strong>Settings:</strong> Display ads → Responsive → Square<br>
+          <strong>Used on:</strong> Article sidebars, mid-content<br>
+          <strong>Copy the Slot ID</strong> → paste in <code>ads.js → adUnits.rectangle</code>
+        </div>
+      </div>
+      <div class="placement-card">
+        <div class="placement-card-header">📄 Unit 3: In-Article (Native) <span class="status-badge status-ready">Recommended</span></div>
+        <div class="placement-card-body">
+          <strong>Settings:</strong> In-article ads → Automatic styling<br>
+          <strong>Used on:</strong> Inside article content, between sections<br>
+          <strong>Copy the Slot ID</strong> → paste in <code>ads.js → adUnits.inArticle</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: REPLACE PLACEHOLDERS -->
+  <div class="step-card">
+    <div class="step-badge">STEP 4</div>
+    <h2 style="margin-top:8px;">Replace Ad Placeholder Divs (Manual Method)</h2>
+    <p>If you prefer manual control, replace each <code>.ad-slot</code> div with an actual AdSense unit:</p>
+
+    <div class="code-block">
+      <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+<span class="hl-green">&lt;!-- REPLACE THIS placeholder: --&gt;</span>
+<span class="highlight">&lt;div</span> class=<span class="hl-yellow">"ad-slot ad-slot-horizontal"</span><span class="highlight">&gt;</span>
+  <span class="highlight">&lt;div&gt;</span>📢 Advertisement<span class="highlight">&lt;/div&gt;</span>
+<span class="highlight">&lt;/div&gt;</span>
+
+<span class="hl-green">&lt;!-- WITH THIS real AdSense unit: --&gt;</span>
+<span class="highlight">&lt;div</span> style=<span class="hl-yellow">"min-height:90px; text-align:center;"</span><span class="highlight">&gt;</span>
+  <span class="highlight">&lt;ins</span> class=<span class="hl-yellow">"adsbygoogle"</span>
+       style=<span class="hl-yellow">"display:block"</span>
+       data-ad-client=<span class="hl-yellow">"ca-pub-XXXXXXXXXXXXXXXX"</span>
+       data-ad-slot=<span class="hl-yellow">"XXXXXXXXXX"</span>
+       data-ad-format=<span class="hl-yellow">"auto"</span>
+       data-full-width-responsive=<span class="hl-yellow">"true"</span><span class="highlight">&gt;&lt;/ins&gt;</span>
+  <span class="highlight">&lt;script&gt;</span>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  <span class="highlight">&lt;/script&gt;</span>
+<span class="highlight">&lt;/div&gt;</span>
+    </div>
+    <div class="tip-box"><p>✅ <strong>Pro tip:</strong> Set <code>demoMode: false</code> in ads.js and it does this replacement automatically — no need to edit 40 HTML files manually!</p></div>
+  </div>
+
+  <!-- STEP 5: AUTO ADS -->
+  <div class="step-card">
+    <div class="step-badge">STEP 5</div>
+    <h2 style="margin-top:8px;">Enable Auto Ads (Optional but Recommended)</h2>
+    <p>Auto Ads lets Google place additional ads automatically where they'll perform best. Enable it in AdSense:</p>
+    <div style="background:#f8f9fc; border-radius:10px; padding:16px; margin:16px 0;">
+      <ol style="margin-left:18px; list-style:decimal;">
+        <li style="margin-bottom:8px; color:var(--text-mid); font-size:0.9rem;">Go to <strong>AdSense → Ads → Overview</strong></li>
+        <li style="margin-bottom:8px; color:var(--text-mid); font-size:0.9rem;">Click on your site name</li>
+        <li style="margin-bottom:8px; color:var(--text-mid); font-size:0.9rem;">Toggle <strong>Auto ads ON</strong></li>
+        <li style="margin-bottom:8px; color:var(--text-mid); font-size:0.9rem;">Click <strong>Apply to site</strong></li>
+        <li style="margin-bottom:8px; color:var(--text-mid); font-size:0.9rem;">Auto ads will appear within 20–30 minutes</li>
+      </ol>
+    </div>
+    <div class="warning-box"><p>⚠️ Auto Ads can sometimes place too many ads. Monitor your ad density — Google recommends no more than 3 ads per screen height. Check in <strong>AdSense → Ads → Auto ads → Ad load</strong> settings.</p></div>
+  </div>
+
+  <!-- AD PLACEMENT STRATEGY -->
+  <div class="step-card">
+    <div class="step-badge">STRATEGY</div>
+    <h2 style="margin-top:8px;">Ad Placement Strategy for Maximum Revenue</h2>
+    <p>UtilPro already has optimal ad positions built in. Here's the strategy:</p>
+
+    <div style="overflow-x:auto; margin:20px 0;">
+      <table class="earning-table">
+        <thead><tr>
+          <th>Ad Position</th><th>Format</th><th>Page Type</th><th>Avg CTR</th><th>Revenue Impact</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>🔝 Below header</td><td>728×90 Leaderboard</td><td>All pages</td><td>1.5–2.5%</td><td style="color:#15803d; font-weight:600;">High ⭐⭐⭐</td></tr>
+          <tr><td>📄 Mid-article</td><td>In-article Native</td><td>Blog pages</td><td>2–4%</td><td style="color:#15803d; font-weight:600;">Very High ⭐⭐⭐⭐</td></tr>
+          <tr><td>📌 Sidebar</td><td>300×250 Rectangle</td><td>Articles</td><td>0.8–1.5%</td><td style="color:#d97706; font-weight:600;">Medium ⭐⭐</td></tr>
+          <tr><td>🔧 Above tool result</td><td>336×280 Large Rect</td><td>Tool pages</td><td>1–2%</td><td style="color:#15803d; font-weight:600;">High ⭐⭐⭐</td></tr>
+          <tr><td>📊 Below content</td><td>Responsive Auto</td><td>All pages</td><td>0.5–1%</td><td style="color:var(--text-mid); font-weight:600;">Low ⭐</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin:20px 0 10px;">💡 Revenue Optimization Tips</h4>
+    <div class="checklist">
+      <div class="checklist-item"><input type="checkbox"><div><strong>Use responsive ad units</strong> — they automatically resize for mobile and desktop, maximizing fill rate.</div></div>
+      <div class="checklist-item"><input type="checkbox"><div><strong>Place ads above the fold</strong> — the leaderboard below the header is the most valuable position.</div></div>
+      <div class="checklist-item"><input type="checkbox"><div><strong>In-article native ads</strong> blend with content and get 2–4x higher CTR than display ads.</div></div>
+      <div class="checklist-item"><input type="checkbox"><div><strong>A/B test ad positions</strong> — use AdSense's built-in experiments to test which placements earn more.</div></div>
+      <div class="checklist-item"><input type="checkbox"><div><strong>Avoid too many ads</strong> — Google penalizes sites with poor ad-to-content ratio. Max 3 ads per page is recommended.</div></div>
+      <div class="checklist-item"><input type="checkbox"><div><strong>Use anchor ads (mobile)</strong> — a sticky bottom banner on mobile converts well. Enable in Auto Ads settings.</div></div>
+      <div class="checklist-item"><input type="checkbox"><div><strong>Target high-CPC keywords</strong> — Finance (EMI, loans) and tech keywords get Rs.30–100+ per click in Pakistan.</div></div>
+    </div>
+  </div>
+
+  <!-- EARNING ESTIMATE -->
+  <div class="step-card" style="border:2px solid var(--primary);">
+    <div class="step-badge" style="background:#059669;">EARNINGS</div>
+    <h2 style="margin-top:8px;">Estimated Revenue Potential</h2>
+    <p>Based on typical Pakistan/South Asia traffic metrics:</p>
+    <div style="overflow-x:auto; margin:16px 0;">
+      <table class="earning-table">
+        <thead><tr><th>Daily Visitors</th><th>Page Views</th><th>Monthly Estimate (PKR)</th><th>Monthly Estimate (USD)</th></tr></thead>
+        <tbody>
+          <tr><td>100–300</td><td>300–900</td><td>Rs. 3,000–10,000</td><td>$11–36</td></tr>
+          <tr><td>500–1,000</td><td>1,500–3,000</td><td>Rs. 15,000–35,000</td><td>$54–126</td></tr>
+          <tr><td>2,000–5,000</td><td>6,000–15,000</td><td>Rs. 60,000–150,000</td><td>$215–540</td></tr>
+          <tr><td>10,000+</td><td>30,000+</td><td>Rs. 300,000+</td><td>$1,000+</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><p>💡 <strong>Key insight:</strong> Tool pages (EMI Calculator, Currency Converter) generate 3–5x more ad revenue than regular blog pages because users spend more time on them and return repeatedly. Focus your traffic generation on tool pages.</p></div>
+    <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:16px; margin-top:16px;">
+      <strong style="color:#15803d; display:block; margin-bottom:6px;">💰 Revenue Maximizers Built Into UtilPro:</strong>
+      <ul style="margin-left:18px; list-style:disc; margin-top:8px;">
+        <li style="color:#166534; font-size:0.9rem; margin-bottom:4px;">Finance tool pages → High CPC (loan, EMI, currency keywords)</li>
+        <li style="color:#166534; font-size:0.9rem; margin-bottom:4px;">Government service pages → Low competition, high volume Pakistan traffic</li>
+        <li style="color:#166534; font-size:0.9rem; margin-bottom:4px;">Education pages → Seasonal spike traffic during exam season (July-October)</li>
+        <li style="color:#166534; font-size:0.9rem; margin-bottom:4px;">Tech fix pages → International traffic = higher CPC rates</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GOOGLE ANALYTICS -->
+  <div class="step-card">
+    <div class="step-badge">BONUS</div>
+    <h2 style="margin-top:8px;">Add Google Analytics 4 (Free Traffic Insights)</h2>
+    <p>Track your visitors, page views, bounce rate, and user behavior. Required for understanding what's working.</p>
+    <div class="code-block">
+      <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+<span class="hl-green">&lt;!-- Add this in &lt;head&gt; of every page --&gt;</span>
+<span class="highlight">&lt;script</span> async src=<span class="hl-yellow">"https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"</span><span class="highlight">&gt;&lt;/script&gt;</span>
+<span class="highlight">&lt;script&gt;</span>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', <span class="hl-yellow">'G-XXXXXXXXXX'</span>); <span class="hl-green">// ← replace with your GA4 ID</span>
+<span class="highlight">&lt;/script&gt;</span>
+    </div>
+    <p style="font-size:0.88rem; color:var(--text-light);">Get your GA4 ID at <strong>analytics.google.com</strong> → Create Property → Web → Get Measurement ID (G-XXXXXXXXXX)</p>
+  </div>
+
+  <!-- GOOGLE SEARCH CONSOLE -->
+  <div class="step-card">
+    <div class="step-badge">SEO</div>
+    <h2 style="margin-top:8px;">Submit Sitemap to Google Search Console</h2>
+    <p>Speed up indexing of all 40 pages by submitting your sitemap to Google.</p>
+    <ol style="margin-left:18px; list-style:decimal; margin-top:12px;">
+      <li style="margin-bottom:10px; color:var(--text-mid);">Go to <strong>search.google.com/search-console</strong></li>
+      <li style="margin-bottom:10px; color:var(--text-mid);">Add property → Enter your domain → Verify via DNS or HTML file</li>
+      <li style="margin-bottom:10px; color:var(--text-mid);">Go to <strong>Sitemaps</strong> in the left menu</li>
+      <li style="margin-bottom:10px; color:var(--text-mid);">Enter: <code>https://yourdomain.com/sitemap.xml</code></li>
+      <li style="margin-bottom:10px; color:var(--text-mid);">Click <strong>Submit</strong> — Google will start crawling within 24–48 hours</li>
+    </ol>
+    <div class="tip-box"><p>✅ UtilPro's <code>sitemap.xml</code> already includes all 40 pages with proper priority and changefreq values. Just update the domain name from <code>utilpro.net</code> to your actual domain.</p></div>
+  </div>
+
+  <!-- FINAL CHECKLIST -->
+  <div class="tool-card-main" style="border:2px solid #34a853;">
+    <h3 style="margin-bottom:20px; color:#15803d;">✅ Complete Launch Checklist</h3>
+    <div class="checklist">
+      <div class="checklist-item"><input type="checkbox"><div>Deploy site to Netlify or cPanel hosting</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Connect custom domain (e.g. utilpro.net)</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Enable HTTPS / SSL certificate</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Update sitemap.xml with real domain</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Submit sitemap to Google Search Console</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Add Google Analytics 4 tracking code</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Apply for Google AdSense (after 2–3 weeks live)</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>After AdSense approval: update publisherId in js/ads.js</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Set demoMode: false in js/ads.js</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Create 3 ad units in AdSense dashboard</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Update ad unit IDs in js/ads.js → adUnits</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Enable Auto Ads in AdSense for mobile anchor ads</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Test page speed at pagespeed.web.dev (target 90+)</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Share articles on WhatsApp groups and social media</div></div>
+      <div class="checklist-item"><input type="checkbox"><div>Write 2–4 new articles per month for SEO growth</div></div>
+    </div>
+  </div>
+
+</div></section>
+
+<footer class="footer"><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><p>© 2026 UtilPro | <a href="index.html" style="color:rgba(255,255,255,0.6);">Back to Homepage</a></p></div></div></footer>
+<script>
+function copyCode(btn) {
+  const block = btn.parentElement;
+  const text = block.innerText.replace('Copy', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.style.background = '#22c55e';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = ''; }, 2000);
+  });
+}
+</script>
+</body></html>
