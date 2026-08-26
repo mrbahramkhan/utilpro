@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter — PKR, USD, EUR, GBP, AED | UtilPro</title>
+  <meta name="description" content="Convert PKR to USD, EUR, GBP, AED, SAR and 15+ currencies. Free online currency converter with reference exchange rates for Pakistan.">
+  <link rel="canonical" href="https://utilpro.net/tools/currency-converter.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/improvements.css">
+  <link rel="stylesheet" href="../css/lang-theme.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html" class="logo"><div class="logo-icon">🛠️</div>Util<span>Pro</span></a>
+      <div class="nav-links"><a href="../index.html">Home</a><a href="index.html" class="active">Tools</a><a href="../blog/index.html">Guides</a></div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Mobile Language & Theme Quick Select -->
+    <div class="mobile-controls">
+      <button class="mobile-lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ur')">🇵🇰 UR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('ar')">🇸🇦 AR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('hi')">🇮🇳 HI</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('fr')">🇫🇷 FR</button>
+      <button class="mobile-lang-btn" onclick="setLanguage('zh')">🇨🇳 ZH</button>
+    </div>
+    <div class="mobile-controls" style="flex-wrap:wrap;">
+      <button class="mobile-lang-btn" onclick="setTheme('light')">☀️ Light</button>
+      <button class="mobile-lang-btn" onclick="setTheme('dark')">🌙 Dark</button>
+      <button class="mobile-lang-btn" onclick="setTheme('ocean')">🌊 Ocean</button>
+      <button class="mobile-lang-btn" onclick="setTheme('forest')">🌿 Forest</button>
+      <button class="mobile-lang-btn" onclick="setTheme('sunset')">🌅 Sunset</button>
+      <button class="mobile-lang-btn" onclick="setTheme('purple')">🔮 Purple</button>
+      <button class="mobile-lang-btn" onclick="setTheme('contrast')">⚡ Contrast</button>
+    </div>
+<a href="../index.html">🏠 Home</a><a href="index.html">🔧 Tools</a></div>
+</header>
+
+<div class="tool-header">
+  <div class="tool-container">
+    <h1>💱 Currency Converter</h1>
+    <p>Convert between 16 major currencies including PKR, USD, EUR, GBP, and AED.</p>
+  </div>
+</div>
+
+<div class="tool-body">
+  <div class="tool-container">
+    <div class="ad-slot ad-slot-horizontal" style="margin-bottom:28px;"><div>📢 Advertisement</div></div>
+
+    <div class="tool-card-main">
+      <div class="warning-box" style="margin-bottom:20px;">
+        ⚠️ <strong>Note:</strong> These are reference exchange rates (approximate as of June 2026). For live rates, please check your bank or State Bank of Pakistan website.
+      </div>
+
+      <div class="row-3" style="gap:16px; align-items:end; margin-bottom:24px;">
+        <div class="form-group" style="margin:0;">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" value="1" min="0" step="any" oninput="convert()">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label for="fromCur">From</label>
+          <select id="fromCur" onchange="convert()"></select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label for="toCur">To</label>
+          <select id="toCur" onchange="convert()"></select>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="convert()" style="flex:1; justify-content:center;">💱 Convert</button>
+        <button class="btn btn-outline" onclick="swapCurrencies()">⇄ Swap</button>
+      </div>
+
+      <div class="result-box show" id="resultBox" style="margin-top:24px;">
+        <div style="text-align:center;">
+          <div style="font-size:0.9rem; color:var(--text-light); margin-bottom:6px;" id="fromLabel">1 USD =</div>
+          <div class="result-value" id="resultValue">—</div>
+          <div style="font-size:0.9rem; color:var(--text-light); margin-top:4px;" id="rateInfo">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick rates table -->
+    <div class="tool-card-main" style="margin-top:24px;">
+      <h3 style="margin-bottom:18px;">📊 PKR Exchange Rates (Reference, June 2026)</h3>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.88rem;">
+          <thead>
+            <tr style="background:var(--primary); color:#fff;">
+              <th style="padding:10px 14px; text-align:left;">Currency</th>
+              <th style="padding:10px 14px; text-align:right;">1 PKR =</th>
+              <th style="padding:10px 14px; text-align:right;">1 Unit = PKR</th>
+            </tr>
+          </thead>
+          <tbody id="ratesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ad-slot ad-slot-horizontal" style="margin-top:24px;"><div>📢 Advertisement</div></div>
+  </div>
+</div>
+
+<footer class="footer"><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><p>© 2026 UtilPro | Reference rates only — not for financial transactions</p></div></div></footer>
+<button class="scroll-top" id="scrollTop">↑</button>
+<script src="../js/main.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/themes.js"></script>
+<script src="../js/ads.js"></script>
+<script src="../js/performance.js"></script>
+<script>
+// Reference rates: PKR per 1 unit of currency (approx June 2026)
+const currencies = {
+  PKR: { rate: 1, flag: '🇵🇰', name: 'Pakistani Rupee' },
+  USD: { rate: 278.50, flag: '🇺🇸', name: 'US Dollar' },
+  EUR: { rate: 302.10, flag: '🇪🇺', name: 'Euro' },
+  GBP: { rate: 353.80, flag: '🇬🇧', name: 'British Pound' },
+  AED: { rate: 75.85, flag: '🇦🇪', name: 'UAE Dirham' },
+  SAR: { rate: 74.27, flag: '🇸🇦', name: 'Saudi Riyal' },
+  CAD: { rate: 205.60, flag: '🇨🇦', name: 'Canadian Dollar' },
+  AUD: { rate: 180.40, flag: '🇦🇺', name: 'Australian Dollar' },
+  CNY: { rate: 38.50, flag: '🇨🇳', name: 'Chinese Yuan' },
+  JPY: { rate: 1.86, flag: '🇯🇵', name: 'Japanese Yen' },
+  INR: { rate: 3.34, flag: '🇮🇳', name: 'Indian Rupee' },
+  TRY: { rate: 8.35, flag: '🇹🇷', name: 'Turkish Lira' },
+  QAR: { rate: 76.51, flag: '🇶🇦', name: 'Qatari Riyal' },
+  KWD: { rate: 906.20, flag: '🇰🇼', name: 'Kuwaiti Dinar' },
+  MYR: { rate: 63.40, flag: '🇲🇾', name: 'Malaysian Ringgit' },
+  BHD: { rate: 739.10, flag: '🇧🇭', name: 'Bahraini Dinar' }
+};
+
+// Build selects
+const fromSel = document.getElementById('fromCur');
+const toSel = document.getElementById('toCur');
+Object.entries(currencies).forEach(([code, data]) => {
+  fromSel.innerHTML += `<option value="${code}">${data.flag} ${code} - ${data.name}</option>`;
+  toSel.innerHTML += `<option value="${code}">${data.flag} ${code} - ${data.name}</option>`;
+});
+fromSel.value = 'USD';
+toSel.value = 'PKR';
+
+// Build rates table
+const tbody = document.getElementById('ratesTable');
+Object.entries(currencies).filter(([c]) => c !== 'PKR').forEach(([code, data], i) => {
+  const pkrPer1 = data.rate;
+  const unitPerPKR = (1 / data.rate).toFixed(6);
+  tbody.innerHTML += `
+    <tr style="background:${i%2===0?'#fff':'#f8f9fc'}">
+      <td style="padding:9px 14px;">${data.flag} ${code} — ${data.name}</td>
+      <td style="padding:9px 14px; text-align:right; font-family:monospace;">${unitPerPKR}</td>
+      <td style="padding:9px 14px; text-align:right; font-family:monospace; font-weight:600; color:var(--primary);">₨ ${pkrPer1.toFixed(2)}</td>
+    </tr>`;
+});
+
+function convert() {
+  const amount = parseFloat(document.getElementById('amount').value) || 0;
+  const from = document.getElementById('fromCur').value;
+  const to = document.getElementById('toCur').value;
+  const pkrAmount = amount * currencies[from].rate;
+  const result = pkrAmount / currencies[to].rate;
+  const rate = currencies[from].rate / currencies[to].rate;
+
+  document.getElementById('fromLabel').textContent = `${amount} ${from} =`;
+  document.getElementById('resultValue').textContent = `${result.toFixed(4)} ${to}`;
+  document.getElementById('rateInfo').textContent = `1 ${from} = ${rate.toFixed(6)} ${to}`;
+}
+
+function swapCurrencies() {
+  const tmp = fromSel.value;
+  fromSel.value = toSel.value;
+  toSel.value = tmp;
+  convert();
+}
+
+convert();
+</script>
+</body>
+</html>
