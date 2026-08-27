@@ -12,12 +12,28 @@ let pdfjsLib = null;
 function loadPdfJs() {
   return new Promise((resolve, reject) => {
     if (pdfjsLib) { resolve(pdfjsLib); return; }
+    // Check if already loaded globally
+    if (window['pdfjs-dist/build/pdf']) {
+      pdfjsLib = window['pdfjs-dist/build/pdf'];
+      const base = (() => { const s = document.querySelector('script[src*="pdf-convert"]'); return s ? s.src.replace('js/pdf-convert.js','') : '../'; })();
+      pdfjsLib.GlobalWorkerOptions.workerSrc = base + 'libs/pdf.worker.min.js';
+      resolve(pdfjsLib); return;
+    }
     const script = document.createElement('script');
-    script.src = '../libs/pdf.min.js';
+    const base2 = (() => { const s = document.querySelector('script[src*="pdf-convert"]'); return s ? s.src.replace('js/pdf-convert.js','') : '../'; })();
+    script.src = base2 + 'libs/pdf.min.js';
     script.onload = () => {
       pdfjsLib = window['pdfjs-dist/build/pdf'];
       // Point worker to local copy
-      pdfjsLib.GlobalWorkerOptions.workerSrc = '../libs/pdf.worker.min.js';
+      // Auto-detect base path for GitHub Pages compatibility
+const _base = (() => {
+  const scripts = document.querySelectorAll('script[src]');
+  for(const s of scripts){
+    if(s.src.includes('pdf-convert')) return s.src.replace('js/pdf-convert.js','');
+  }
+  return window.location.origin + '/';
+})();
+pdfjsLib.GlobalWorkerOptions.workerSrc = _base + 'libs/pdf.worker.min.js';
       resolve(pdfjsLib);
     };
     script.onerror = () => reject(new Error('PDF.js failed to load'));
@@ -29,7 +45,8 @@ function loadXlsx() {
   return new Promise((resolve, reject) => {
     if (window.XLSX) { resolve(window.XLSX); return; }
     const script = document.createElement('script');
-    script.src = '../libs/xlsx.full.min.js';
+    const base3 = (() => { const s = document.querySelector('script[src*="pdf-convert"]'); return s ? s.src.replace('js/pdf-convert.js','') : '../'; })();
+    script.src = base3 + 'libs/xlsx.full.min.js';
     script.onload = () => resolve(window.XLSX);
     script.onerror = () => reject(new Error('SheetJS failed to load'));
     document.head.appendChild(script);
@@ -169,6 +186,7 @@ async function convertPdfToExcel(file, options = {}) {
     for (let i = 0; i < pages.length; i++) {
       setStatus(`Processing page ${i + 1} of ${numPages}…`);
       const page = pages[i];
+      if (!page || !page.items || !page.items.length) continue;
       const { tableRows, colCount } = detectTables(page.items, page.width);
 
       if (multiSheet) {
@@ -194,6 +212,7 @@ async function convertPdfToExcel(file, options = {}) {
     }
 
     setStatus('Generating Excel file…');
+    if (wb.SheetNames.length === 0) { const ws = XLSX.utils.aoa_to_sheet([['No extractable text found']]); XLSX.utils.book_append_sheet(wb, ws, 'Result'); }
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([excelBuffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -241,6 +260,7 @@ async function convertPdfToWord(file, options = {}) {
 
     // Build plain text content per page
     const pageTexts = pages.map(page => {
+      if (!page || !page.items || !page.items.length) return '(No text found on this page)';
       // Sort items by Y then X for reading order
       const sorted = [...page.items].sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
       let text = '', lastY = -1;
