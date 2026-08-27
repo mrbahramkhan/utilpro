@@ -329,7 +329,19 @@ function buildGenericPanel(id, t) {
   return `<div class="tool-card">${panelHeader(id)}<div class="tool-body">
     ${dropzone(id, accept, isMulti ? 'multiple' : '')}
     ${extra}
-    <button class="action-btn" id="btn-${id}" onclick="process('${id}')" disabled>${t.icon} ${t.title.split(' ')[0]} Now</button>
+    <button class="action-btn" id="btn-${id}" onclick="process('${id}')" disabled>
+      ${({
+        merge:'🔗 Merge PDFs', split:'✂️ Split PDF', extract:'📑 Extract Pages',
+        reorder:'🔀 Reorder Pages', delete:'🗑️ Delete Pages',
+        img2pdf:'📄 Create PDF', word2pdf:'📝 Convert to PDF', excel2pdf:'📊 Convert to PDF',
+        html2pdf:'🌐 Convert to PDF', pdf2jpg:'📸 Convert to JPG', pdf2png:'🖼️ Convert to PNG',
+        pdf2word:'📄 Convert to Word', pdf2excel:'📊 Convert to Excel', pdf2ppt:'📽️ Convert to PPT',
+        pdf2txt:'📋 Extract Text', compress:'🗜️ Compress PDF', rotate:'🔄 Rotate PDF',
+        repair:'🔧 Repair PDF', protect:'🔐 Protect PDF', unlock:'🔓 Unlock PDF',
+        sign:'✍️ Sign PDF', redact:'⬛ Redact PDF', watermark:'💧 Add Watermark',
+        pagenums:'🔢 Add Page Numbers', crop:'✂️ Crop PDF', info:'ℹ️ Analyze PDF'
+      })[id] || t.icon + ' ' + t.title}
+    </button>
     ${progressAndResult(id, resultContent)}
     <div class="sec-note">🔒 <span>Files processed locally — never uploaded to our servers.</span></div>
   </div></div>`;
@@ -724,7 +736,14 @@ function process(tool) {
     const url = URL.createObjectURL(new Blob(['%PDF-1.4'], { type:'application/pdf' }));
     setDownload(tool, url, outName);
     const t = TOOLS[tool];
-    if (btn) { btn.disabled = false; btn.textContent = `${t?.icon||''} ${t?.title?.split(' ')[0]||'Process'} Now`; }
+    const btnLabels = {
+      merge:'🔗 Merge PDFs', split:'✂️ Split PDF', extract:'📑 Extract Pages',
+      reorder:'🔀 Reorder Pages', delete:'🗑️ Delete Pages',
+      pdf2word:'📄 Convert to Word', pdf2excel:'📊 Convert to Excel',
+      rotate:'🔄 Rotate PDF', watermark:'💧 Add Watermark',
+      pagenums:'🔢 Add Page Numbers', img2pdf:'📄 Create PDF'
+    };
+    if (btn) { btn.disabled = false; btn.textContent = btnLabels[tool] || (t?.icon + ' ' + (t?.title||'Process')); }
     toast(`✅ ${t?.title || 'Done'}!`);
   });
 }
