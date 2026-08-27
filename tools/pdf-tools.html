@@ -64,7 +64,7 @@
     .stat-box span{font-size:.73rem;color:var(--text-light);}
     .wm-preview{position:relative;background:#f8f9fc;border:1px solid var(--border);border-radius:9px;height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:11px;}
     .wm-text{position:absolute;font-size:2.2rem;font-weight:800;opacity:.15;transform:rotate(-30deg);pointer-events:none;}
-    .wm-lines{display:flex;flex-direction:column;gap:7px;}
+    .wm-lines{display:flex;flex-direction:column;gap:7px;} .warning-box{background:#fff7ed;border-left:4px solid #f97316;border-radius:8px;padding:10px 14px;margin-top:10px;} .warning-box p{color:#9a3412;font-size:.83rem;margin:0;}
     .wm-line{height:5px;background:#ddd;border-radius:3px;}
     .sec-note{display:flex;align-items:center;gap:8px;padding:9px 13px;background:#f0fdf4;border-radius:7px;font-size:.8rem;color:#15803d;margin-top:12px;}
     .comp-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:8px;}
@@ -189,6 +189,7 @@
 <footer class="footer"><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><p>© 2026 UtilPro PDF Hub | <a href="../index.html" style="color:rgba(255,255,255,.6)">Home</a> | <a href="index.html" style="color:rgba(255,255,255,.6)">All Tools</a> | Your files never leave your browser</p></div></div></footer>
 <button class="scroll-top" id="scrollTop">↑</button>
 
+<script src="../js/pdf-convert.js"></script>
 <script src="../js/main.js"></script>
 <script src="../js/i18n.js"></script>
 <script src="../js/themes.js"></script>
@@ -236,9 +237,13 @@ const TOOLS = {
 function S(id) {
   currentTool = id;
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelector(`[onclick="S('${id}')"]`)?.classList.add('active');
+  const activeNav = document.querySelector(`[onclick="S('${id}')"]`);
+  if (activeNav) activeNav.classList.add('active');
   renderPanel(id);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Scroll content area to top on mobile
+  const content = document.getElementById('toolsContent');
+  if (content) content.scrollTop = 0;
+  if (window.innerWidth > 860) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderPanel(id) {
@@ -291,12 +296,18 @@ function dropzone(id, accept, multiple='') {
 }
 
 function progressAndResult(id, extraResult='') {
+  const labels = {merge:'Merge Complete',split:'Split Complete',rotate:'Pages Rotated',
+    watermark:'Watermark Added',pagenums:'Page Numbers Added',extract:'Pages Extracted',
+    reorder:'Pages Reordered',delete:'Pages Deleted',compress:'Compression Complete',
+    img2pdf:'PDF Created',pdf2word:'Converted to Word',pdf2excel:'Converted to Excel',
+    pdf2jpg:'Converted to JPG',pdf2png:'Converted to PNG'};
+  const label = labels[id] || 'Done';
   return `<div class="prog-wrap" id="prog-${id}">
     <div class="prog-outer"><div class="prog-inner" id="pi-${id}" style="width:0%"></div></div>
     <div class="prog-label" id="pl-${id}">Processing…</div>
   </div>
   <div class="result-ok" id="res-${id}">
-    <h4>✅ Done!</h4>${extraResult}
+    <h4>✅ ${label}!</h4>${extraResult}
     <a class="dl-btn" id="dl-${id}" href="#" download>⬇️ Download Result</a>
   </div>`;
 }
@@ -313,7 +324,7 @@ function buildGenericPanel(id, t) {
   if (id === 'reorder') extra = `<div class="opt" style="margin-top:14px"><label>New Page Order</label><input type="text" id="reorder-order" placeholder="e.g. 3, 1, 2, 4, 5"><p style="font-size:.76rem;color:var(--text-light);margin:3px 0 0">Current page numbers in the desired new order.</p></div>`;
   if (id === 'delete')  extra = `<div class="opt" style="margin-top:14px"><label>Pages to Delete</label><input type="text" id="delete-pages" placeholder="e.g. 2, 4-6, 9"><p style="font-size:.76rem;color:var(--text-light);margin:3px 0 0">These pages will be permanently removed.</p></div>`;
   if (id === 'pdf2word') extra = `<div class="opts"><div class="opt"><label>Conversion Mode</label><select><option>Preserve Layout</option><option>Text Only</option></select></div><div class="opt"><label>Include Images</label><select><option>Yes</option><option>No</option></select></div></div>`;
-  if (id === 'pdf2excel') extra = `<div class="opts"><div class="opt"><label>Table Detection</label><select><option>Auto Detect</option><option>All Rows</option></select></div><div class="opt"><label>Page Mapping</label><select><option>All → One Sheet</option><option>Each Page → Sheet</option></select></div></div>`;
+  if (id === 'pdf2excel') extra = `<div class="opts"><div class="opt"><label>Table Detection</label><select id="excel-detect"><option value="auto">Auto Detect</option><option value="all">All Rows</option></select></div><div class="opt"><label>Page Mapping</label><select id="excel-sheets"><option value="one">All → One Sheet</option><option value="multi">Each Page → Sheet</option></select></div></div>`;
   const resultContent = id.startsWith('pdf2') ? `<p id="info-${id}" style="font-size:.86rem;color:var(--text-mid);margin-bottom:4px"></p>` : '';
   return `<div class="tool-card">${panelHeader(id)}<div class="tool-body">
     ${dropzone(id, accept, isMulti ? 'multiple' : '')}
@@ -366,8 +377,11 @@ function bindCompressLevels() {
 function buildImgPanel(id) {
   const fmt = id === 'pdf2jpg' ? 'JPG' : 'PNG';
   const qOpt = id === 'pdf2jpg' ? `<div class="opt"><label>Quality: <span id="qval-${id}">90%</span></label>
-    <input type="range" min="50" max="100" value="90" oninput="document.getElementById('qval-${id}').textContent=this.value+'%'">
-    <div class="ql-row"><span>50%</span><span>100%</span></div></div>` : '';
+    <input type="range" min="50" max="100" value="90" id="quality-${id}" oninput="document.getElementById('qval-${id}').textContent=this.value+'%'">
+    <div class="ql-row"><span>50%</span><span>100%</span></div></div>` : 
+    `<div class="opt"><label>Quality: <span id="qval-${id}">92%</span></label>
+    <input type="range" min="50" max="100" value="92" id="quality-${id}" oninput="document.getElementById('qval-${id}').textContent=this.value+'%'">
+    <div class="ql-row"><span>50%</span><span>100%</span></div></div>`;
   return `<div class="tool-card">${panelHeader(id)}<div class="tool-body">
     ${dropzone(id, '.pdf')}
     <div class="opts" style="margin-top:14px">
@@ -375,15 +389,15 @@ function buildImgPanel(id) {
         <option value="72">72 DPI — Screen</option>
         <option value="150" selected>150 DPI — Standard</option>
         <option value="200">200 DPI — High</option>
-        <option value="300">300 DPI — Print</option></select></div>
+        <option value="300">300 DPI — Print Quality</option></select></div>
       ${qOpt}
     </div>
     <button class="action-btn" id="btn-${id}" onclick="process('${id}')" disabled>📸 Convert to ${fmt}</button>
     <div class="prog-wrap" id="prog-${id}"><div class="prog-outer"><div class="prog-inner" id="pi-${id}" style="width:0%"></div></div><div class="prog-label" id="pl-${id}">Converting pages…</div></div>
     <div class="result-ok" id="res-${id}"><h4>✅ Converted to ${fmt}!</h4>
-      <p id="info-${id}" style="font-size:.86rem;color:var(--text-mid)"></p>
-      <div class="preview-grid" id="pv-${id}"></div>
-      <a class="dl-btn" id="dl-${id}" href="#" download>⬇️ Download All (ZIP)</a></div>
+      <p id="info-${id}" style="font-size:.86rem;color:var(--text-mid);margin-bottom:6px"></p>
+      <div class="preview-grid" id="pv-${id}" style="margin-bottom:10px"></div>
+      <a class="dl-btn" id="dl-${id}" href="#" download>⬇️ Download All Pages (ZIP)</a></div>
   </div></div>`;
 }
 
@@ -495,14 +509,14 @@ function buildUnlockPanel() {
 /* ── INFO PANEL ───────────────────── */
 function buildInfoPanel() {
   return `<div class="tool-card">${panelHeader('info')}<div class="tool-body">
-    <div class="dropzone" id="dz-info">
-      <input type="file" accept=".pdf" onchange="processInfo(this.files[0])">
+    <div class="dropzone" id="dz-info" data-tool="info">
+      <input type="file" accept=".pdf" data-tool="info" onchange="processInfo(this.files[0])">
       <div class="dz-icon">📂</div>
       <div class="dz-title">Drop any PDF to analyze</div>
-      <div class="dz-sub">Instant metadata extraction — no upload needed</div>
+      <div class="dz-sub">Instant metadata extraction — nothing uploaded to servers</div>
       <div class="dz-btn">Choose PDF File</div>
     </div>
-    <div id="info-result" style="display:none;margin-top:18px;display:flex;flex-direction:column;gap:8px;"></div>
+    <div id="info-result" style="display:none;flex-direction:column;gap:8px;margin-top:18px;"></div>
   </div></div>`;
 }
 
@@ -644,8 +658,7 @@ function setupDropzones() {
     dz.addEventListener('dragleave', () => dz.classList.remove('over'));
     dz.addEventListener('drop', e => {
       e.preventDefault(); dz.classList.remove('over');
-      const inp = dz.querySelector('input[type=file]');
-      const tool = inp?.getAttribute('onchange')?.match(/addFiles\('(\w+)'/)?.[1];
+      const tool = dz.dataset.tool || dz.querySelector('input[type=file]')?.dataset.tool;
       if (tool) addFiles(tool, e.dataTransfer.files);
     });
   });
@@ -787,7 +800,7 @@ async function doImages(file, fmt) {
   if (wrap) wrap.classList.add('show');
   const btn = document.getElementById('btn-'+tool);
   const dpi = parseInt(document.getElementById('dpi-'+tool)?.value || 150);
-  const quality = parseInt(document.getElementById('qval-'+tool)?.textContent || '90') / 100;
+  const qualityInput = document.getElementById('quality-'+tool); const quality = qualityInput ? (parseInt(qualityInput.value) / 100) : 0.92;
   const previewEl = document.getElementById('pv-'+tool);
   if (previewEl) previewEl.innerHTML = '';
 
@@ -888,10 +901,10 @@ function doTextFallback(file) {
     const dl = document.getElementById('dl-pdf2txt');
     if (dl) { dl.href=url; dl.download=file.name.replace('.pdf','.txt'); }
     document.getElementById('res-pdf2txt')?.classList.add('show');
-    const btn = document.getElementById('btn-pdf2txt');
-    if (btn) { btn.disabled=false; btn.textContent='📋 Extract Text'; }
-    const wrap = document.getElementById('prog-pdf2txt');
-    if (wrap) wrap.classList.remove('show');
+    const btnT = document.getElementById('btn-pdf2txt');
+    if (btnT) { btnT.disabled=false; btnT.textContent='📋 Extract Text'; }
+    const wrapT = document.getElementById('prog-pdf2txt');
+    if (wrapT) wrapT.classList.remove('show');
     toast('✅ Text extracted!');
   };
   reader.readAsArrayBuffer(file);
@@ -1131,6 +1144,7 @@ function showError(tool, msg) {
 function processInfo(file) {
   if (!file) return;
   const result = document.getElementById('info-result');
+  if(!result) return;
   result.style.display = 'flex';
   result.innerHTML = '<p style="color:var(--text-light);font-size:.86rem;padding:10px 0">⏳ Reading metadata…</p>';
   const reader = new FileReader();
@@ -1163,10 +1177,11 @@ function processInfo(file) {
 
 /* ── TOAST ────────────────────────── */
 function toast(msg) {
+  document.querySelectorAll('.toast').forEach(e => e.remove());
   const t = document.createElement('div');
   t.className = 'toast'; t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(16px)'; setTimeout(()=>t.remove(),300); }, 3000);
+  setTimeout(()=>{ t.style.transition='all .3s'; t.style.opacity='0'; t.style.transform='translateY(16px)'; setTimeout(()=>t.remove(),300); }, 3000);
 }
 
 /* ── INIT ─────────────────────────── */
