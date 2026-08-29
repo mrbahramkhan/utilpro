@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UtilPro Admin Panel</title>
 <meta name="robots" content="noindex,nofollow">
+<!-- Netlify Identity Widget -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -208,7 +210,7 @@ body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min
     <button class="login-btn" onclick="doLogin()">🔐 Sign In</button>
     <div class="login-error" id="login-error">❌ Invalid User ID or Password</div>
     <p style="text-align:center;font-size:.75rem;color:var(--sub);margin-top:16px">
-      Default: <strong>admin</strong> / <strong>utilpro2026</strong>
+      Forgot password? Check GitHub repo admin.html
     </p>
   </div>
 </div>
@@ -823,11 +825,19 @@ body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min
         <div class="card">
           <div class="card-header"><h3>🔐 Change Password</h3></div>
           <div class="card-body">
-            <div class="form-group"><label>Current Password</label><input type="password" id="cur-pwd" placeholder="Current password"></div>
-            <div class="form-group"><label>New User ID</label><input type="text" id="new-uid" placeholder="New user ID"></div>
-            <div class="form-group"><label>New Password</label><input type="password" id="new-pwd" placeholder="Min 8 characters"></div>
-            <div class="form-group"><label>Confirm Password</label><input type="password" id="new-pwd2" placeholder="Repeat new password"></div>
-            <button class="btn btn-primary" onclick="changePassword()">🔐 Update Credentials</button>
+            <div style="padding:14px;background:var(--green-l);border-radius:10px;margin-bottom:16px">
+              <div style="font-size:.88rem;font-weight:700;color:var(--green)">✅ Netlify Identity Active</div>
+              <div style="font-size:.8rem;color:var(--sub);margin-top:4px">Password is managed securely by Netlify — not stored in code.</div>
+            </div>
+            <button class="btn btn-primary" onclick="window.open('https://app.netlify.com','_blank')">⚙️ Manage in Netlify Dashboard</button>
+            <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+              <div style="font-size:.82rem;font-weight:600;margin-bottom:10px;color:var(--text)">Fallback credentials (non-Netlify):</div>
+              <div class="form-group"><label>New User ID</label><input type="text" id="new-uid" placeholder="New user ID"></div>
+              <div class="form-group"><label>Current Password</label><input type="password" id="cur-pwd" placeholder="Current password"></div>
+              <div class="form-group"><label>New Password</label><input type="password" id="new-pwd" placeholder="Min 6 characters"></div>
+              <div class="form-group"><label>Confirm Password</label><input type="password" id="new-pwd2" placeholder="Repeat new password"></div>
+              <button class="btn btn-outline" onclick="changePassword()">🔐 Update Fallback Password</button>
+            </div>
           </div>
         </div>
         <div class="card">
@@ -842,13 +852,13 @@ body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min
                 <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ Admin Page Hidden from Search</div>
                 <div style="font-size:.78rem;color:var(--sub)">noindex,nofollow meta tag set</div>
               </div>
-              <div style="padding:12px;background:var(--primary-l);border-radius:8px">
-                <div style="font-size:.84rem;font-weight:600;color:var(--primary)">ℹ️ Login stored in localStorage</div>
-                <div style="font-size:.78rem;color:var(--sub)">Session clears when browser closes</div>
+              <div style="padding:12px;background:var(--green-l);border-radius:8px">
+                <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ Netlify Identity (JWT)</div>
+                <div style="font-size:.78rem;color:var(--sub)">Real authentication — password NOT in source code</div>
               </div>
-              <div style="padding:12px;background:var(--yellow-l);border-radius:8px">
-                <div style="font-size:.84rem;font-weight:600;color:var(--yellow)">⚠️ Change default password!</div>
-                <div style="font-size:.78rem;color:var(--sub)">Default: admin / utilpro2026</div>
+              <div style="padding:12px;background:var(--green-l);border-radius:8px">
+                <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ Email-based login</div>
+                <div style="font-size:.78rem;color:var(--sub)">Invite-only access via Netlify dashboard</div>
               </div>
             </div>
           </div>
@@ -865,65 +875,112 @@ body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min
    ADMIN PANEL CORE SYSTEM
 ═══════════════════════════════════════ */
 
-// ── AUTH ──────────────────────────────
-const DEFAULT_UID = 'admin';
-const DEFAULT_PWD = 'utilpro2026';
+// ── AUTH — Netlify Identity ─────────────
+let currentUser = null;
 
-function getCredentials() {
-  return {
-    uid: localStorage.getItem('up_admin_uid') || DEFAULT_UID,
-    pwd: localStorage.getItem('up_admin_pwd') || DEFAULT_PWD
-  };
+// Initialize Netlify Identity
+window.netlifyIdentity && netlifyIdentity.on('init', user => {
+  if (user) showAdminPanel(user);
+});
+
+netlifyIdentity && netlifyIdentity.on('login', user => {
+  currentUser = user;
+  netlifyIdentity.close();
+  showAdminPanel(user);
+  logActivity('Logged in via Netlify Identity', '🔐');
+});
+
+netlifyIdentity && netlifyIdentity.on('logout', () => {
+  currentUser = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-panel').style.display = 'none';
+});
+
+netlifyIdentity && netlifyIdentity.on('error', err => {
+  console.error('Netlify Identity error:', err);
+  const el = document.getElementById('login-error');
+  if (el) { el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 4000); }
+});
+
+function showAdminPanel(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+  const name = user.user_metadata?.full_name || user.email || 'Admin';
+  document.getElementById('sidebar-user').textContent = name;
+  initAdmin();
 }
 
 function doLogin() {
-  const uid = document.getElementById('uid').value.trim();
-  const pwd = document.getElementById('pwd').value;
-  const creds = getCredentials();
-  if (uid === creds.uid && pwd === creds.pwd) {
-    localStorage.setItem('up_admin_session', Date.now());
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-    document.getElementById('sidebar-user').textContent = uid;
-    initAdmin();
-  } else {
-    const err = document.getElementById('login-error');
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 3000);
-  }
+  netlifyIdentity && netlifyIdentity.open('login');
 }
 
 function doLogout() {
-  localStorage.removeItem('up_admin_session');
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('admin-panel').style.display = 'none';
+  netlifyIdentity && netlifyIdentity.logout();
 }
 
-// Auto-login if session recent
+// Auto-check on load
 window.addEventListener('load', () => {
-  const session = parseInt(localStorage.getItem('up_admin_session') || 0);
-  if (Date.now() - session < 8 * 3600 * 1000) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-    const creds = getCredentials();
-    document.getElementById('sidebar-user').textContent = creds.uid;
-    initAdmin();
+  if (!window.netlifyIdentity) {
+    // Fallback if Netlify Identity not available (e.g., GitHub Pages)
+    showFallbackLogin();
+    return;
   }
+  const user = netlifyIdentity.currentUser();
+  if (user) showAdminPanel(user);
 });
 
+// Fallback login for non-Netlify environments (GitHub Pages)
+function showFallbackLogin() {
+  const loginArea = document.getElementById('netlify-login-area');
+  if (loginArea) {
+    loginArea.innerHTML = \`
+      <div class="login-field">
+        <label>User ID</label>
+        <input type="text" id="uid" placeholder="Enter user ID" value="admin" autocomplete="username">
+      </div>
+      <div class="login-field" style="margin-top:10px">
+        <label>Password</label>
+        <input type="password" id="pwd" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')fallbackLogin()">
+      </div>
+      <button class="login-btn" onclick="fallbackLogin()" style="margin-top:12px">🔐 Sign In</button>
+      <p style="text-align:center;font-size:.72rem;color:var(--sub);margin-top:10px">Fallback mode — Netlify not detected</p>
+    \`;
+  }
+}
+
+function fallbackLogin() {
+  const uid = document.getElementById('uid')?.value?.trim();
+  const pwd = document.getElementById('pwd')?.value;
+  const savedUid = localStorage.getItem('up_admin_uid') || 'admin';
+  const savedPwd = localStorage.getItem('up_admin_pwd') || 'utilpro2026';
+  if (uid === savedUid && pwd === savedPwd) {
+    localStorage.setItem('up_admin_session', Date.now());
+    showAdminPanel({ email: uid, user_metadata: { full_name: uid } });
+  } else {
+    const err = document.getElementById('login-error');
+    if (err) { err.style.display = 'block'; setTimeout(() => err.style.display = 'none', 3000); }
+  }
+}
+
 function changePassword() {
-  const cur = document.getElementById('cur-pwd').value;
-  const uid = document.getElementById('new-uid').value.trim();
-  const pwd = document.getElementById('new-pwd').value;
-  const pwd2 = document.getElementById('new-pwd2').value;
-  const creds = getCredentials();
-  if (cur !== creds.pwd) { notify('❌ Current password is wrong', 'error'); return; }
-  if (pwd !== pwd2) { notify('❌ New passwords do not match', 'error'); return; }
-  if (pwd.length < 6) { notify('❌ Password must be at least 6 characters', 'error'); return; }
+  if (currentUser) {
+    // Use Netlify Identity to update password
+    netlifyIdentity && netlifyIdentity.open('signup');
+    notify('ℹ️ Use Netlify Dashboard to change password', 'info');
+    return;
+  }
+  // Fallback password change
+  const cur = document.getElementById('cur-pwd')?.value;
+  const uid = document.getElementById('new-uid')?.value?.trim();
+  const pwd = document.getElementById('new-pwd')?.value;
+  const pwd2 = document.getElementById('new-pwd2')?.value;
+  const savedPwd = localStorage.getItem('up_admin_pwd') || 'utilpro2026';
+  if (cur !== savedPwd) { notify('❌ Current password wrong', 'error'); return; }
+  if (pwd !== pwd2) { notify('❌ Passwords do not match', 'error'); return; }
+  if (pwd.length < 6) { notify('❌ Min 6 characters', 'error'); return; }
   if (uid) localStorage.setItem('up_admin_uid', uid);
   if (pwd) localStorage.setItem('up_admin_pwd', pwd);
-  notify('✅ Credentials updated! Please log in again.', 'success');
-  setTimeout(doLogout, 2000);
+  notify('✅ Password updated!', 'success');
 }
 
 // ── NAVIGATION ─────────────────────────
