@@ -11,6 +11,12 @@
   to = "/blog/index.html"
   status = 200
 
+# Admin panel — protect with Netlify Identity
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
 [[headers]]
   for = "*.html"
   [headers.values]
@@ -26,5 +32,10 @@
 
 [[headers]]
   for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/libs/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
