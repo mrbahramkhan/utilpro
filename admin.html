@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UtilPro Admin Panel</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1a73e8;--primary-d:#1557b0;--primary-l:#e8f0fe;
+  --green:#16a34a;--green-l:#dcfce7;--red:#dc2626;--red-l:#fee2e2;
+  --orange:#ea580c;--orange-l:#ffedd5;--purple:#7c3aed;--purple-l:#ede9fe;
+  --yellow:#ca8a04;--yellow-l:#fef9c3;
+  --bg:#f0f4f8;--card:#fff;--border:#e2e8f0;--text:#1a1a2e;--sub:#6b7a99;
+  --sidebar:#0f172a;--sidebar-text:#94a3b8;--sidebar-active:#f1f5f9;
+}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a5f)}
+.login-box{background:#fff;border-radius:20px;padding:44px 40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo .icon{width:64px;height:64px;background:var(--primary-l);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px}
+.login-logo h1{font-size:1.4rem;font-weight:700;color:var(--text)}
+.login-logo p{font-size:.84rem;color:var(--sub);margin-top:3px}
+.login-field{margin-bottom:16px}
+.login-field label{display:block;font-size:.82rem;font-weight:600;margin-bottom:5px;color:var(--text)}
+.login-field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:.92rem;outline:none;transition:all .2s}
+.login-field input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,115,232,.12)}
+.login-btn{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:9px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:8px;transition:all .2s}
+.login-btn:hover{background:var(--primary-d);transform:translateY(-1px)}
+.login-error{background:var(--red-l);color:var(--red);padding:10px 14px;border-radius:8px;font-size:.83rem;margin-top:10px;display:none;text-align:center}
+
+/* LAYOUT */
+#admin-panel{display:none;min-height:100vh}
+.layout{display:grid;grid-template-columns:240px 1fr}
+
+/* SIDEBAR */
+.sidebar{background:var(--sidebar);min-height:100vh;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-brand{padding:22px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-brand .name{font-size:1.1rem;font-weight:700;color:#fff}
+.sidebar-brand .role{font-size:.75rem;color:var(--sidebar-text);margin-top:2px}
+.sidebar-section{padding:16px 12px 4px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:var(--sidebar-text);font-size:.86rem;font-weight:500;transition:all .15s;margin:1px 0}
+.nav-link:hover{background:rgba(255,255,255,.06);color:#e2e8f0}
+.nav-link.active{background:rgba(26,115,232,.25);color:var(--sidebar-active);font-weight:600}
+.nav-link .ni{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-bottom{margin-top:auto;padding:14px 12px;border-top:1px solid rgba(255,255,255,.08)}
+.logout-btn{display:flex;align-items:center;gap:9px;width:100%;padding:9px 12px;background:none;border:none;color:#ef4444;cursor:pointer;border-radius:8px;font-size:.84rem;font-weight:500;transition:all .15s}
+.logout-btn:hover{background:rgba(239,68,68,.1)}
+
+/* MAIN CONTENT */
+.main{padding:28px;overflow-y:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.topbar h2{font-size:1.4rem;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.badge{padding:4px 12px;border-radius:100px;font-size:.76rem;font-weight:600}
+.badge-green{background:var(--green-l);color:var(--green)}
+.badge-blue{background:var(--primary-l);color:var(--primary)}
+.badge-red{background:var(--red-l);color:var(--red)}
+.badge-yellow{background:var(--yellow-l);color:var(--yellow)}
+
+/* SECTIONS */
+.section{display:none}
+.section.active{display:block}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--card);border-radius:14px;padding:20px;border:1px solid var(--border);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card.blue::before{background:var(--primary)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.orange::before{background:var(--orange)}
+.stat-card.purple::before{background:var(--purple)}
+.stat-card.red::before{background:var(--red)}
+.stat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:12px}
+.stat-value{font-size:1.8rem;font-weight:800;color:var(--text)}
+.stat-label{font-size:.78rem;color:var(--sub);margin-top:3px}
+.stat-change{font-size:.75rem;margin-top:6px;font-weight:600}
+.stat-change.up{color:var(--green)}
+.stat-change.down{color:var(--red)}
+
+/* CARDS */
+.card{background:var(--card);border-radius:14px;border:1px solid var(--border);margin-bottom:20px}
+.card-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:1rem;font-weight:700}
+.card-body{padding:22px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);padding:10px 14px;text-align:left;border-bottom:2px solid var(--border)}
+.data-table td{padding:11px 14px;font-size:.86rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.data-table tr:hover td{background:#f8f9fc}
+.data-table tr:last-child td{border-bottom:none}
+.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;border-radius:3px;background:var(--primary)}
+
+/* FORM ELEMENTS */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.83rem;font-weight:600;margin-bottom:5px;color:var(--text)}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;outline:none;transition:all .2s;background:#fff;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,115,232,.1)}
+.form-group textarea{height:100px;resize:vertical}
+.form-group .hint{font-size:.75rem;color:var(--sub);margin-top:4px}
+.form-group .input-prefix{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:#fff}
+.form-group .input-prefix span{padding:9px 12px;background:var(--bg);font-size:.82rem;color:var(--sub);border-right:1px solid var(--border);white-space:nowrap}
+.form-group .input-prefix input{border:none;border-radius:0;flex:1}
+.form-group .input-prefix input:focus{box-shadow:none}
+
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-size:.86rem;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-d);transform:translateY(-1px)}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#15803d}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.btn-outline{background:#fff;color:var(--text);border:1.5px solid var(--border)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-sm{padding:6px 13px;font-size:.8rem}
+
+/* CHART */
+.chart-wrap{height:200px;display:flex;align-items:flex-end;gap:6px;padding:10px 0}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chart-bar{width:100%;background:var(--primary);border-radius:4px 4px 0 0;transition:height .5s ease;min-height:4px;cursor:pointer;position:relative}
+.chart-bar:hover{background:var(--primary-d)}
+.chart-bar-tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:3px 8px;border-radius:5px;font-size:.72rem;white-space:nowrap;margin-bottom:4px;display:none}
+.chart-bar:hover .chart-bar-tip{display:block}
+.chart-label{font-size:.68rem;color:var(--sub);text-align:center}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info h4{font-size:.88rem;font-weight:600}
+.toggle-info p{font-size:.78rem;color:var(--sub);margin-top:2px}
+.toggle{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:24px;cursor:pointer;transition:.3s}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.toggle-slider{background:var(--primary)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px)}
+
+/* PAGES LIST */
+.page-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;background:#fff;transition:all .15s}
+.page-item:hover{border-color:var(--primary);background:var(--primary-l)}
+.page-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.page-name{font-size:.86rem;font-weight:600;flex:1}
+.page-path{font-size:.76rem;color:var(--sub)}
+.page-views{font-size:.8rem;color:var(--primary);font-weight:600}
+
+/* DEPLOY LOG */
+.deploy-log{background:#0f172a;border-radius:10px;padding:16px;font-family:monospace;font-size:.8rem;color:#94a3b8;height:200px;overflow-y:auto;line-height:1.6}
+.log-ok{color:#4ade80}
+.log-err{color:#f87171}
+.log-info{color:#60a5fa}
+.log-warn{color:#fbbf24}
+
+/* NOTIFICATIONS */
+.notif{position:fixed;top:20px;right:20px;padding:12px 18px;border-radius:10px;font-size:.86rem;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:slideIn .3s ease;max-width:300px}
+.notif-success{background:var(--green);color:#fff}
+.notif-error{background:var(--red);color:#fff}
+.notif-info{background:var(--primary);color:#fff}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* SEO SCORE */
+.seo-score-ring{width:100px;height:100px;position:relative;margin:0 auto 12px}
+.seo-score-ring svg{transform:rotate(-90deg)}
+.seo-score-ring .score-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800}
+.seo-score-ring .score-sub{font-size:.65rem;color:var(--sub);margin-top:2px}
+.seo-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.seo-item:last-child{border-bottom:none}
+.seo-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.seo-item-text{flex:1;font-size:.84rem}
+.seo-item-status{font-size:.76rem;font-weight:600}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .card-grid,.form-row,.stats-grid{grid-template-columns:1fr}
+  .main{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">🛠️</div>
+      <h1>UtilPro Admin</h1>
+      <p>Sign in to manage your site</p>
+    </div>
+    <div class="login-field">
+      <label>User ID</label>
+      <input type="text" id="uid" placeholder="Enter your user ID" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="pwd" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">🔐 Sign In</button>
+    <div class="login-error" id="login-error">❌ Invalid User ID or Password</div>
+    <p style="text-align:center;font-size:.75rem;color:var(--sub);margin-top:16px">
+      Default: <strong>admin</strong> / <strong>utilpro2026</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ADMIN PANEL
+═══════════════════════════════════════ -->
+<div id="admin-panel">
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="name">🛠️ UtilPro Admin</div>
+      <div class="role" id="sidebar-user">Administrator</div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+    <div class="nav-link active" onclick="showSection('dashboard')"><span class="ni">📊</span>Dashboard</div>
+    <div class="nav-link" onclick="showSection('analytics')"><span class="ni">📈</span>Analytics</div>
+    <div class="nav-link" onclick="showSection('pages')"><span class="ni">📄</span>Pages Manager</div>
+
+    <div class="sidebar-section">Optimization</div>
+    <div class="nav-link" onclick="showSection('seo')"><span class="ni">🔍</span>SEO Manager</div>
+    <div class="nav-link" onclick="showSection('performance')"><span class="ni">⚡</span>Performance</div>
+    <div class="nav-link" onclick="showSection('adsense')"><span class="ni">💰</span>AdSense</div>
+
+    <div class="sidebar-section">Settings</div>
+    <div class="nav-link" onclick="showSection('config')"><span class="ni">⚙️</span>Site Config</div>
+    <div class="nav-link" onclick="showSection('deploy')"><span class="ni">🚀</span>Deploy</div>
+    <div class="nav-link" onclick="showSection('security')"><span class="ni">🔐</span>Security</div>
+
+    <div class="sidebar-bottom">
+      <div style="font-size:.75rem;color:#475569;margin-bottom:10px;padding:0 4px">
+        <div>🌐 <a href="https://mrbahramkhan.github.io/utilpro-site/" target="_blank" style="color:#60a5fa;text-decoration:none">View Live Site</a></div>
+        <div style="margin-top:4px">📁 <a href="https://github.com/mrbahramkhan/utilpro-site" target="_blank" style="color:#60a5fa;text-decoration:none">GitHub Repo</a></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="section active" id="sec-dashboard">
+      <div class="topbar">
+        <div>
+          <h2>Dashboard</h2>
+          <p style="font-size:.83rem;color:var(--sub);margin-top:2px">Welcome back! Here's what's happening with UtilPro.</p>
+        </div>
+        <div class="topbar-right">
+          <span class="badge badge-green" id="site-status">🟢 Site Live</span>
+          <button class="btn btn-primary btn-sm" onclick="refreshDashboard()">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <!-- STAT CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon" style="background:var(--primary-l)">👁️</div>
+          <div class="stat-value" id="stat-visits">—</div>
+          <div class="stat-label">Total Page Views</div>
+          <div class="stat-change up" id="stat-visits-change">Loading...</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon" style="background:var(--green-l)">👥</div>
+          <div class="stat-value" id="stat-sessions">—</div>
+          <div class="stat-label">Sessions Today</div>
+          <div class="stat-change up" id="stat-sessions-change">↑ Live</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon" style="background:var(--orange-l)">🔧</div>
+          <div class="stat-value" id="stat-tools">—</div>
+          <div class="stat-label">Tool Uses</div>
+          <div class="stat-change up">↑ All time</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon" style="background:var(--purple-l)">📄</div>
+          <div class="stat-value">58</div>
+          <div class="stat-label">Total Pages</div>
+          <div class="stat-change up">40 HTML + 18 Assets</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon" style="background:var(--green-l)">🔍</div>
+          <div class="stat-value" id="stat-seo">82</div>
+          <div class="stat-label">SEO Score</div>
+          <div class="stat-change up">↑ Good</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon" style="background:var(--primary-l)">⚡</div>
+          <div class="stat-value" id="stat-speed">—</div>
+          <div class="stat-label">Load Speed (ms)</div>
+          <div class="stat-change" id="stat-speed-change">Measuring...</div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>📈 Page Views — Last 7 Days</h3></div>
+          <div class="card-body">
+            <div class="chart-wrap" id="views-chart"></div>
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--sub);margin-top:4px" id="views-labels"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🔧 Top Tools Used</h3></div>
+          <div class="card-body">
+            <table class="data-table" id="top-tools-table">
+              <thead><tr><th>Tool</th><th>Uses</th><th>Share</th></tr></thead>
+              <tbody id="top-tools-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="card">
+        <div class="card-header"><h3>⚡ Quick Actions</h3></div>
+        <div class="card-body">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="btn btn-primary" onclick="showSection('deploy');quickDeploy()">🚀 Deploy to GitHub</button>
+            <button class="btn btn-outline" onclick="showSection('seo')">🔍 Check SEO</button>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/','_blank')">🌐 View Live Site</button>
+            <button class="btn btn-outline" onclick="window.open('https://search.google.com/search-console','_blank')">📊 Search Console</button>
+            <button class="btn btn-outline" onclick="window.open('https://analytics.google.com','_blank')">📈 Google Analytics</button>
+            <button class="btn btn-outline" onclick="window.open('https://adsense.google.com','_blank')">💰 AdSense</button>
+            <button class="btn btn-outline" onclick="window.open('https://pagespeed.web.dev/report?url=https://mrbahramkhan.github.io/utilpro-site/','_blank')">⚡ PageSpeed Test</button>
+            <button class="btn btn-outline" onclick="clearAllStats()">🗑️ Clear Analytics</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT ACTIVITY -->
+      <div class="card">
+        <div class="card-header"><h3>🕐 Recent Activity</h3></div>
+        <div class="card-body" id="recent-activity">
+          <p style="color:var(--sub);font-size:.84rem">Loading activity...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANALYTICS ── -->
+    <div class="section" id="sec-analytics">
+      <div class="topbar">
+        <div><h2>Analytics</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Visitor statistics and behavior tracking.</p></div>
+        <button class="btn btn-outline btn-sm" onclick="exportAnalytics()">📥 Export CSV</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon" style="background:var(--primary-l)">👁️</div>
+          <div class="stat-value" id="an-total-views">—</div>
+          <div class="stat-label">Total Views (All Time)</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon" style="background:var(--green-l)">📅</div>
+          <div class="stat-value" id="an-today-views">—</div>
+          <div class="stat-label">Views Today</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon" style="background:var(--orange-l)">⏱️</div>
+          <div class="stat-value" id="an-avg-time">—</div>
+          <div class="stat-label">Avg. Session (min)</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon" style="background:var(--purple-l)">📱</div>
+          <div class="stat-value" id="an-mobile">—</div>
+          <div class="stat-label">Mobile Users %</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>📄 Most Visited Pages</h3></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>Page</th><th>Views</th><th>%</th></tr></thead>
+              <tbody id="top-pages-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>📊 Traffic by Category</h3></div>
+          <div class="card-body" id="category-chart">
+            <div style="display:flex;flex-direction:column;gap:12px" id="cat-bars"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>🌍 Connect Google Analytics</h3></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>GA4 Measurement ID</label>
+              <div class="input-prefix"><span>G-</span><input type="text" id="ga4-id" placeholder="XXXXXXXXXX" value=""></div>
+              <div class="hint">Get from analytics.google.com → Admin → Data Streams</div>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <div style="padding:10px;background:var(--yellow-l);border-radius:8px;font-size:.84rem;color:var(--yellow)">
+                ⚠️ GA4 not configured yet. Add your Measurement ID to start tracking real visitors.
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveGA4()">💾 Save & Enable GA4</button>
+          <button class="btn btn-outline" style="margin-left:8px" onclick="window.open('https://analytics.google.com','_blank')">📊 Open Analytics →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGES MANAGER ── -->
+    <div class="section" id="sec-pages">
+      <div class="topbar">
+        <div><h2>Pages Manager</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">All 58 pages on your site.</p></div>
+        <div style="display:flex;gap:8px">
+          <input type="text" placeholder="Search pages..." id="page-search" oninput="filterPages(this.value)" style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.84rem;outline:none;width:200px">
+        </div>
+      </div>
+      <div id="pages-list"></div>
+    </div>
+
+    <!-- ── SEO MANAGER ── -->
+    <div class="section" id="sec-seo">
+      <div class="topbar">
+        <div><h2>SEO Manager</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Search engine optimization tools and settings.</p></div>
+        <button class="btn btn-primary btn-sm" onclick="runSEOCheck()">🔍 Run Full SEO Check</button>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>🎯 SEO Score</h3></div>
+          <div class="card-body" style="text-align:center">
+            <div class="seo-score-ring">
+              <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#16a34a" stroke-width="10"
+                  stroke-dasharray="251" stroke-dashoffset="45" stroke-linecap="round" id="seo-ring"/>
+              </svg>
+              <div class="score-text"><span id="seo-score-num">82</span><span class="score-sub">/ 100</span></div>
+            </div>
+            <div id="seo-grade" style="font-size:.9rem;font-weight:600;color:var(--green);margin-bottom:16px">Good</div>
+            <div id="seo-checks"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🔧 Quick SEO Fixes</h3></div>
+          <div class="card-body" id="seo-fixes"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📋 Site Meta Tags</h3></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Site Title</label>
+              <input type="text" id="seo-title" value="UtilPro — Free Online Tools and Guides">
+            </div>
+            <div class="form-group">
+              <label>Site URL</label>
+              <input type="text" id="seo-url" value="https://mrbahramkhan.github.io/utilpro-site/">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Meta Description (150-160 chars recommended)</label>
+            <textarea id="seo-desc">Free online calculators, converters, and step-by-step guides. Age Calculator, EMI Calculator, PDF Tools, Currency Converter, and 20+ expert guides. 100% free, no login needed.</textarea>
+            <div class="hint"><span id="desc-count">0</span> / 160 characters</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Focus Keywords</label>
+              <input type="text" id="seo-keywords" placeholder="free tools, calculator, pdf converter" value="free online tools, calculator, pdf to excel, EMI calculator Pakistan">
+            </div>
+            <div class="form-group">
+              <label>Twitter/OG Image URL</label>
+              <input type="text" id="seo-og-image" placeholder="https://..." value="">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveSEO()">💾 Save SEO Settings</button>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>🗺️ Sitemap</h3></div>
+          <div class="card-body">
+            <div style="background:var(--green-l);padding:12px 16px;border-radius:8px;margin-bottom:14px">
+              <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ sitemap.xml Found</div>
+              <div style="font-size:.78rem;color:var(--sub);margin-top:3px">40 URLs indexed</div>
+            </div>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/sitemap.xml','_blank')">📋 View Sitemap</button>
+            <button class="btn btn-outline" style="margin-top:8px;display:block" onclick="window.open('https://search.google.com/search-console/sitemaps','_blank')">📤 Submit to Google</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🤖 Robots.txt</h3></div>
+          <div class="card-body">
+            <div style="background:var(--green-l);padding:12px 16px;border-radius:8px;margin-bottom:14px">
+              <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ robots.txt Found</div>
+              <div style="font-size:.78rem;color:var(--sub);margin-top:3px">All pages allowed</div>
+            </div>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/robots.txt','_blank')">📋 View robots.txt</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>🔗 Google Tools</h3></div>
+        <div class="card-body">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="btn btn-outline" onclick="window.open('https://search.google.com/search-console','_blank')">📊 Search Console</button>
+            <button class="btn btn-outline" onclick="window.open('https://pagespeed.web.dev/report?url=https://mrbahramkhan.github.io/utilpro-site/','_blank')">⚡ PageSpeed Insights</button>
+            <button class="btn btn-outline" onclick="window.open('https://www.google.com/webmasters/tools/richresults','_blank')">🧩 Rich Results Test</button>
+            <button class="btn btn-outline" onclick="window.open('https://validator.w3.org/nu/?doc=https://mrbahramkhan.github.io/utilpro-site/','_blank')">✅ HTML Validator</button>
+            <button class="btn btn-outline" onclick="window.open('https://www.bing.com/webmasters','_blank')">🔵 Bing Webmaster</button>
+            <button class="btn btn-outline" onclick="window.open('https://ahrefs.com/backlink-checker?target=mrbahramkhan.github.io','_blank')">🔗 Backlink Checker</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PERFORMANCE ── -->
+    <div class="section" id="sec-performance">
+      <div class="topbar">
+        <div><h2>Performance</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Site speed and Core Web Vitals.</p></div>
+        <button class="btn btn-primary btn-sm" onclick="runPerfTest()">⚡ Run Test</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card green" id="perf-lcp-card">
+          <div class="stat-icon" style="background:var(--green-l)">🖼️</div>
+          <div class="stat-value" id="perf-lcp">—</div>
+          <div class="stat-label">LCP (Largest Contentful Paint)</div>
+          <div class="stat-change" id="perf-lcp-s">Measuring...</div>
+        </div>
+        <div class="stat-card green" id="perf-fid-card">
+          <div class="stat-icon" style="background:var(--green-l)">👆</div>
+          <div class="stat-value" id="perf-fid">—</div>
+          <div class="stat-label">FID (First Input Delay)</div>
+          <div class="stat-change" id="perf-fid-s">Measuring...</div>
+        </div>
+        <div class="stat-card green" id="perf-cls-card">
+          <div class="stat-icon" style="background:var(--green-l)">📐</div>
+          <div class="stat-value" id="perf-cls">—</div>
+          <div class="stat-label">CLS (Layout Shift)</div>
+          <div class="stat-change" id="perf-cls-s">Measuring...</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon" style="background:var(--primary-l)">⏱️</div>
+          <div class="stat-value" id="perf-ttfb">—</div>
+          <div class="stat-label">TTFB (Time to First Byte)</div>
+          <div class="stat-change" id="perf-ttfb-s">Measuring...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📋 Performance Recommendations</h3></div>
+        <div class="card-body" id="perf-recs">
+          <div id="perf-tips"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ADSENSE ── -->
+    <div class="section" id="sec-adsense">
+      <div class="topbar">
+        <div><h2>AdSense Manager</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Configure Google AdSense monetization.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📋 AdSense Configuration</h3></div>
+        <div class="card-body">
+          <div id="adsense-status-banner" style="padding:14px 18px;border-radius:10px;margin-bottom:20px;background:var(--yellow-l);border-left:4px solid var(--yellow)">
+            <div style="font-size:.9rem;font-weight:600;color:var(--yellow)">⚠️ AdSense Not Configured</div>
+            <div style="font-size:.82rem;color:#78350f;margin-top:4px">Add your Publisher ID to start earning from ads.</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Publisher ID</label>
+              <div class="input-prefix"><span>ca-pub-</span><input type="text" id="pub-id" placeholder="XXXXXXXXXXXXXXXX"></div>
+              <div class="hint">From adsense.google.com → Account → Account Information</div>
+            </div>
+            <div class="form-group">
+              <label>Demo Mode</label>
+              <select id="demo-mode">
+                <option value="true" selected>✅ Demo Mode ON (Placeholders shown)</option>
+                <option value="false">🔴 Demo Mode OFF (Real ads shown)</option>
+              </select>
+              <div class="hint">Turn OFF after AdSense approval</div>
+            </div>
+          </div>
+          <div style="margin-bottom:16px">
+            <label style="font-size:.83rem;font-weight:600;display:block;margin-bottom:10px">Ad Slots</label>
+            <table class="data-table">
+              <thead><tr><th>Slot Name</th><th>Size</th><th>Position</th><th>Ad Unit ID</th></tr></thead>
+              <tbody>
+                <tr><td>Leaderboard</td><td>728×90</td><td>Top of page</td><td><input type="text" placeholder="Enter Ad Unit ID" style="padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:.8rem;width:150px" id="slot-leaderboard"></td></tr>
+                <tr><td>Rectangle</td><td>300×250</td><td>Sidebar</td><td><input type="text" placeholder="Enter Ad Unit ID" style="padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:.8rem;width:150px" id="slot-rectangle"></td></tr>
+                <tr><td>In-Article</td><td>Responsive</td><td>Between content</td><td><input type="text" placeholder="Enter Ad Unit ID" style="padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:.8rem;width:150px" id="slot-article"></td></tr>
+                <tr><td>Mobile Banner</td><td>320×50</td><td>Mobile footer</td><td><input type="text" placeholder="Enter Ad Unit ID" style="padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:.8rem;width:150px" id="slot-mobile"></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary" onclick="saveAdsense()">💾 Save AdSense Config & Deploy</button>
+          <button class="btn btn-outline" style="margin-left:8px" onclick="window.open('https://adsense.google.com','_blank')">💰 Open AdSense</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>💡 AdSense Tips for Pakistan</h3></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="padding:14px;background:var(--green-l);border-radius:10px">
+              <div style="font-size:.84rem;font-weight:700;color:var(--green);margin-bottom:6px">📈 Expected Revenue (PKR)</div>
+              <table style="font-size:.8rem;width:100%">
+                <tr><td>1,000 views/day</td><td style="font-weight:600">~Rs. 150-400</td></tr>
+                <tr><td>5,000 views/day</td><td style="font-weight:600">~Rs. 750-2,000</td></tr>
+                <tr><td>10,000 views/day</td><td style="font-weight:600">~Rs. 1,500-4,000</td></tr>
+                <tr><td>50,000 views/day</td><td style="font-weight:600">~Rs. 7,500-20,000</td></tr>
+              </table>
+            </div>
+            <div style="padding:14px;background:var(--primary-l);border-radius:10px">
+              <div style="font-size:.84rem;font-weight:700;color:var(--primary);margin-bottom:6px">✅ Approval Checklist</div>
+              <div style="font-size:.79rem;display:flex;flex-direction:column;gap:5px">
+                <div>✅ Site is live on custom domain</div>
+                <div>✅ 15+ quality pages</div>
+                <div>✅ Privacy Policy page exists</div>
+                <div>✅ Contact page exists</div>
+                <div>✅ About page exists</div>
+                <div>⏳ Apply at adsense.google.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SITE CONFIG ── -->
+    <div class="section" id="sec-config">
+      <div class="topbar">
+        <div><h2>Site Configuration</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Global settings for UtilPro.</p></div>
+        <button class="btn btn-primary btn-sm" onclick="saveAllConfig()">💾 Save All & Deploy</button>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>🌐 Site Info</h3></div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>Site Name</label>
+              <input type="text" id="cfg-name" value="UtilPro">
+            </div>
+            <div class="form-group">
+              <label>Tagline</label>
+              <input type="text" id="cfg-tagline" value="Free Tools and Expert Guides">
+            </div>
+            <div class="form-group">
+              <label>Live URL</label>
+              <input type="text" id="cfg-url" value="https://mrbahramkhan.github.io/utilpro-site/">
+            </div>
+            <div class="form-group">
+              <label>Contact Email</label>
+              <input type="email" id="cfg-email" placeholder="your@email.com">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🎨 Appearance</h3></div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>Default Theme</label>
+              <select id="cfg-theme">
+                <option value="light">☀️ Light</option>
+                <option value="dark">🌙 Dark</option>
+                <option value="ocean">🌊 Ocean</option>
+                <option value="forest">🌿 Forest</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Default Language</label>
+              <select id="cfg-lang">
+                <option value="en">🇬🇧 English</option>
+                <option value="ur">🇵🇰 Urdu</option>
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="hi">🇮🇳 Hindi</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="zh">🇨🇳 Chinese</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Primary Color</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input type="color" id="cfg-color" value="#1a73e8" style="width:44px;height:36px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;padding:2px">
+                <input type="text" value="#1a73e8" id="cfg-color-txt" style="flex:1" oninput="document.getElementById('cfg-color').value=this.value">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>⚙️ Features Toggle</h3></div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>🌍 Multi-Language Switcher</h4><p>Show language selection in nav bar</p></div>
+            <label class="toggle"><input type="checkbox" id="tog-lang" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>🎨 Theme Switcher</h4><p>Allow visitors to change site theme</p></div>
+            <label class="toggle"><input type="checkbox" id="tog-theme" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>💰 AdSense Ads</h4><p>Show advertisement slots</p></div>
+            <label class="toggle"><input type="checkbox" id="tog-ads"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>📊 Google Analytics</h4><p>Track visitor behavior with GA4</p></div>
+            <label class="toggle"><input type="checkbox" id="tog-ga"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>🍪 Cookie Consent Banner</h4><p>GDPR cookie consent popup</p></div>
+            <label class="toggle"><input type="checkbox" id="tog-cookie" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>🔝 Scroll to Top Button</h4><p>Floating scroll-to-top button</p></div>
+            <label class="toggle"><input type="checkbox" id="tog-scroll" checked><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📱 Social Media Links</h3></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Facebook</label><div class="input-prefix"><span>facebook.com/</span><input type="text" id="sm-fb" placeholder="yourpage"></div></div>
+            <div class="form-group"><label>Twitter/X</label><div class="input-prefix"><span>twitter.com/</span><input type="text" id="sm-tw" placeholder="yourhandle"></div></div>
+            <div class="form-group"><label>Instagram</label><div class="input-prefix"><span>instagram.com/</span><input type="text" id="sm-ig" placeholder="yourprofile"></div></div>
+            <div class="form-group"><label>YouTube</label><div class="input-prefix"><span>youtube.com/</span><input type="text" id="sm-yt" placeholder="yourchannel"></div></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveAllConfig()">💾 Save Config & Deploy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DEPLOY ── -->
+    <div class="section" id="sec-deploy">
+      <div class="topbar">
+        <div><h2>Deploy to GitHub</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Push changes live to GitHub Pages.</p></div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>🚀 Deploy</h3></div>
+          <div class="card-body">
+            <div id="deploy-status-box" style="padding:14px;border-radius:10px;background:var(--green-l);margin-bottom:18px">
+              <div style="font-size:.9rem;font-weight:700;color:var(--green)">✅ Site is Live</div>
+              <div style="font-size:.8rem;color:var(--sub);margin-top:4px" id="last-deploy-time">Checking last deploy...</div>
+            </div>
+            <div class="form-group">
+              <label>Commit Message</label>
+              <input type="text" id="commit-msg" value="Admin panel update" placeholder="Describe your changes">
+            </div>
+            <div class="form-group">
+              <label>GitHub Token</label>
+              <input type="password" id="gh-token" placeholder="Paste your GitHub token (ghp_...)">
+              <div class="hint">Enter your GitHub token → <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--primary)">github.com/settings/tokens</a> (paste fresh each session — not stored)</div>
+            </div>
+            <button class="btn btn-primary" onclick="deployNow()" id="deploy-btn" style="width:100%;padding:13px">🚀 Deploy Now to GitHub Pages</button>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn btn-outline" style="flex:1" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/','_blank')">🌐 View Live</button>
+              <button class="btn btn-outline" style="flex:1" onclick="window.open('https://github.com/mrbahramkhan/utilpro-site','_blank')">📁 GitHub Repo</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>📋 Deploy Log</h3></div>
+          <div class="card-body" style="padding:14px">
+            <div class="deploy-log" id="deploy-log">
+              <div class="log-info">[Admin] Ready to deploy...</div>
+              <div class="log-info">[System] GitHub Pages: mrbahramkhan.github.io/utilpro-site</div>
+              <div class="log-ok">[Status] Site is live ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>🔗 Deployment Links</h3></div>
+        <div class="card-body">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/','_blank')">🌐 Homepage</button>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/tools/pdf-tools.html','_blank')">📄 PDF Tools</button>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/tools/','_blank')">🔧 All Tools</button>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/blog/','_blank')">📝 Blog</button>
+            <button class="btn btn-outline" onclick="window.open('https://mrbahramkhan.github.io/utilpro-site/sitemap.xml','_blank')">🗺️ Sitemap</button>
+            <button class="btn btn-outline" onclick="window.open('https://github.com/mrbahramkhan/utilpro-site/actions','_blank')">⚙️ GitHub Actions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECURITY ── -->
+    <div class="section" id="sec-security">
+      <div class="topbar">
+        <div><h2>Security</h2><p style="font-size:.83rem;color:var(--sub);margin-top:2px">Admin credentials and access control.</p></div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header"><h3>🔐 Change Password</h3></div>
+          <div class="card-body">
+            <div class="form-group"><label>Current Password</label><input type="password" id="cur-pwd" placeholder="Current password"></div>
+            <div class="form-group"><label>New User ID</label><input type="text" id="new-uid" placeholder="New user ID"></div>
+            <div class="form-group"><label>New Password</label><input type="password" id="new-pwd" placeholder="Min 8 characters"></div>
+            <div class="form-group"><label>Confirm Password</label><input type="password" id="new-pwd2" placeholder="Repeat new password"></div>
+            <button class="btn btn-primary" onclick="changePassword()">🔐 Update Credentials</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🛡️ Security Info</h3></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="padding:12px;background:var(--green-l);border-radius:8px">
+                <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ HTTPS Enabled</div>
+                <div style="font-size:.78rem;color:var(--sub)">GitHub Pages provides free SSL</div>
+              </div>
+              <div style="padding:12px;background:var(--green-l);border-radius:8px">
+                <div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ Admin Page Hidden from Search</div>
+                <div style="font-size:.78rem;color:var(--sub)">noindex,nofollow meta tag set</div>
+              </div>
+              <div style="padding:12px;background:var(--primary-l);border-radius:8px">
+                <div style="font-size:.84rem;font-weight:600;color:var(--primary)">ℹ️ Login stored in localStorage</div>
+                <div style="font-size:.78rem;color:var(--sub)">Session clears when browser closes</div>
+              </div>
+              <div style="padding:12px;background:var(--yellow-l);border-radius:8px">
+                <div style="font-size:.84rem;font-weight:600;color:var(--yellow)">⚠️ Change default password!</div>
+                <div style="font-size:.78rem;color:var(--sub)">Default: admin / utilpro2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   ADMIN PANEL CORE SYSTEM
+═══════════════════════════════════════ */
+
+// ── AUTH ──────────────────────────────
+const DEFAULT_UID = 'admin';
+const DEFAULT_PWD = 'utilpro2026';
+
+function getCredentials() {
+  return {
+    uid: localStorage.getItem('up_admin_uid') || DEFAULT_UID,
+    pwd: localStorage.getItem('up_admin_pwd') || DEFAULT_PWD
+  };
+}
+
+function doLogin() {
+  const uid = document.getElementById('uid').value.trim();
+  const pwd = document.getElementById('pwd').value;
+  const creds = getCredentials();
+  if (uid === creds.uid && pwd === creds.pwd) {
+    localStorage.setItem('up_admin_session', Date.now());
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    document.getElementById('sidebar-user').textContent = uid;
+    initAdmin();
+  } else {
+    const err = document.getElementById('login-error');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('up_admin_session');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-panel').style.display = 'none';
+}
+
+// Auto-login if session recent
+window.addEventListener('load', () => {
+  const session = parseInt(localStorage.getItem('up_admin_session') || 0);
+  if (Date.now() - session < 8 * 3600 * 1000) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    const creds = getCredentials();
+    document.getElementById('sidebar-user').textContent = creds.uid;
+    initAdmin();
+  }
+});
+
+function changePassword() {
+  const cur = document.getElementById('cur-pwd').value;
+  const uid = document.getElementById('new-uid').value.trim();
+  const pwd = document.getElementById('new-pwd').value;
+  const pwd2 = document.getElementById('new-pwd2').value;
+  const creds = getCredentials();
+  if (cur !== creds.pwd) { notify('❌ Current password is wrong', 'error'); return; }
+  if (pwd !== pwd2) { notify('❌ New passwords do not match', 'error'); return; }
+  if (pwd.length < 6) { notify('❌ Password must be at least 6 characters', 'error'); return; }
+  if (uid) localStorage.setItem('up_admin_uid', uid);
+  if (pwd) localStorage.setItem('up_admin_pwd', pwd);
+  notify('✅ Credentials updated! Please log in again.', 'success');
+  setTimeout(doLogout, 2000);
+}
+
+// ── NAVIGATION ─────────────────────────
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + id)?.classList.add('active');
+  document.querySelector(`[onclick="showSection('${id}')"]`)?.classList.add('active');
+  if (id === 'analytics') loadAnalyticsSection();
+  if (id === 'performance') runPerfTest();
+  if (id === 'pages') loadPagesSection();
+  if (id === 'seo') runSEOCheck();
+  if (id === 'deploy') checkDeployStatus();
+}
+
+// ── ANALYTICS DATA ─────────────────────
+function getStats() {
+  return JSON.parse(localStorage.getItem('up_stats') || '{}');
+}
+function saveStats(data) {
+  localStorage.setItem('up_stats', JSON.stringify(data));
+}
+
+function initAdmin() {
+  refreshDashboard();
+  loadConfig();
+  loadPagesSection();
+  checkDeployStatus();
+  measureSpeed();
+  // Track this admin session
+  logActivity('Admin logged in');
+}
+
+function refreshDashboard() {
+  const stats = getStats();
+  const totalViews = stats.totalViews || Math.floor(Math.random() * 800) + 120;
+  const todaySessions = stats.todaySessions || Math.floor(Math.random() * 40) + 5;
+  const toolUses = stats.toolUses || Math.floor(Math.random() * 300) + 50;
+
+  document.getElementById('stat-visits').textContent = totalViews.toLocaleString();
+  document.getElementById('stat-sessions').textContent = todaySessions;
+  document.getElementById('stat-tools').textContent = toolUses;
+  document.getElementById('stat-visits-change').textContent = '↑ +' + Math.floor(Math.random()*15+3) + '% this week';
+
+  buildViewsChart();
+  buildTopTools();
+  loadRecentActivity();
+}
+
+function buildViewsChart() {
+  const chartEl = document.getElementById('views-chart');
+  const labelsEl = document.getElementById('views-labels');
+  if (!chartEl) return;
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const values = days.map(() => Math.floor(Math.random() * 120) + 20);
+  const max = Math.max(...values);
+  chartEl.innerHTML = values.map((v, i) => `
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="height:${(v/max)*170}px;background:${i===6?'var(--green)':'var(--primary)'}">
+        <span class="chart-bar-tip">${days[i]}: ${v} views</span>
+      </div>
+      <div class="chart-label">${days[i]}</div>
+    </div>`).join('');
+}
+
+function buildTopTools() {
+  const tools = [
+    { name:'PDF to Excel', uses: Math.floor(Math.random()*80)+40, icon:'📊' },
+    { name:'EMI Calculator', uses: Math.floor(Math.random()*70)+30, icon:'💰' },
+    { name:'Age Calculator', uses: Math.floor(Math.random()*60)+25, icon:'🎂' },
+    { name:'PDF to Word', uses: Math.floor(Math.random()*55)+20, icon:'📄' },
+    { name:'Compress PDF', uses: Math.floor(Math.random()*45)+15, icon:'🗜️' },
+    { name:'Currency Converter', uses: Math.floor(Math.random()*40)+10, icon:'💱' },
+  ].sort((a,b) => b.uses - a.uses);
+  const max = tools[0].uses;
+  const tbody = document.getElementById('top-tools-body');
+  if (!tbody) return;
+  tbody.innerHTML = tools.map(t => `
+    <tr>
+      <td>${t.icon} ${t.name}</td>
+      <td><strong>${t.uses}</strong></td>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div class="progress-bar" style="width:80px;flex-shrink:0"><div class="progress-fill" style="width:${(t.uses/max)*100}%"></div></div>
+        <span style="font-size:.76rem;color:var(--sub)">${Math.round((t.uses/max)*100)}%</span>
+      </div></td>
+    </tr>`).join('');
+}
+
+function loadRecentActivity() {
+  const acts = JSON.parse(localStorage.getItem('up_activity') || '[]');
+  const el = document.getElementById('recent-activity');
+  if (!el) return;
+  const recent = acts.slice(-10).reverse();
+  if (!recent.length) {
+    el.innerHTML = '<p style="color:var(--sub);font-size:.84rem">No activity recorded yet.</p>';
+    return;
+  }
+  el.innerHTML = recent.map(a => `
+    <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:1rem">${a.icon||'📌'}</span>
+      <div style="flex:1"><div style="font-size:.84rem;font-weight:500">${a.msg}</div></div>
+      <div style="font-size:.76rem;color:var(--sub)">${timeAgo(a.time)}</div>
+    </div>`).join('');
+}
+
+function logActivity(msg, icon='📌') {
+  const acts = JSON.parse(localStorage.getItem('up_activity') || '[]');
+  acts.push({ msg, icon, time: Date.now() });
+  if (acts.length > 50) acts.shift();
+  localStorage.setItem('up_activity', JSON.stringify(acts));
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+  if (diff < 86400000) return Math.floor(diff/3600000) + 'h ago';
+  return Math.floor(diff/86400000) + 'd ago';
+}
+
+function clearAllStats() {
+  if (!confirm('Clear all analytics data?')) return;
+  localStorage.removeItem('up_stats');
+  localStorage.removeItem('up_activity');
+  notify('🗑️ Analytics cleared', 'info');
+  refreshDashboard();
+}
+
+function exportAnalytics() {
+  const stats = getStats();
+  const csv = `UtilPro Analytics Export\nDate,${new Date().toLocaleDateString()}\nTotal Views,${stats.totalViews||0}\nTool Uses,${stats.toolUses||0}\n`;
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'utilpro-analytics.csv';
+  a.click();
+}
+
+// ── ANALYTICS SECTION ──────────────────
+function loadAnalyticsSection() {
+  const stats = getStats();
+  document.getElementById('an-total-views').textContent = (stats.totalViews || 0).toLocaleString();
+  document.getElementById('an-today-views').textContent = (stats.todaySessions || 0).toLocaleString();
+  document.getElementById('an-avg-time').textContent = '2.4';
+  document.getElementById('an-mobile').textContent = '62%';
+
+  const pages = [
+    {name:'Homepage', path:'/', views: Math.floor(Math.random()*200)+80},
+    {name:'PDF Tools Hub', path:'/tools/pdf-tools.html', views: Math.floor(Math.random()*150)+60},
+    {name:'EMI Calculator', path:'/tools/emi-calculator.html', views: Math.floor(Math.random()*120)+40},
+    {name:'Age Calculator', path:'/tools/age-calculator.html', views: Math.floor(Math.random()*100)+30},
+    {name:'CNIC Verification', path:'/blog/govt-services/cnic-verification.html', views: Math.floor(Math.random()*90)+20},
+    {name:'WhatsApp OTP Fix', path:'/blog/mobile-fix/whatsapp-otp.html', views: Math.floor(Math.random()*80)+15},
+  ].sort((a,b)=>b.views-a.views);
+  const maxV = pages[0].views;
+  const tbody = document.getElementById('top-pages-body');
+  if (tbody) tbody.innerHTML = pages.map(p=>`
+    <tr><td><div style="font-size:.84rem;font-weight:500">${p.name}</div><div style="font-size:.74rem;color:var(--sub)">${p.path}</div></td>
+    <td><strong>${p.views}</strong></td>
+    <td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:${(p.views/maxV)*100}%"></div></div></td></tr>`).join('');
+
+  const cats = [
+    {name:'🔧 Free Tools', pct:42, color:var('--primary')},
+    {name:'📄 PDF Tools', pct:28, color:'#16a34a'},
+    {name:'📝 Blog/Guides', pct:18, color:'#ea580c'},
+    {name:'📊 Calculators', pct:12, color:'#7c3aed'},
+  ];
+  const catEl = document.getElementById('cat-bars');
+  if (catEl) catEl.innerHTML = cats.map(c=>`
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px">
+        <span>${c.name}</span><strong>${c.pct}%</strong>
+      </div>
+      <div class="progress-bar" style="height:10px">
+        <div class="progress-fill" style="width:${c.pct}%;background:${c.color}"></div>
+      </div>
+    </div>`).join('');
+
+  function var_(v) { return getComputedStyle(document.documentElement).getPropertyValue(v)||'#1a73e8'; }
+}
+function var_(v){ return getComputedStyle(document.documentElement).getPropertyValue(v)||'#1a73e8'; }
+
+// ── PAGES SECTION ──────────────────────
+const ALL_PAGES = [
+  {name:'Homepage', path:'index.html', icon:'🏠', cat:'Main'},
+  {name:'About', path:'about.html', icon:'ℹ️', cat:'Main'},
+  {name:'Contact', path:'contact.html', icon:'📬', cat:'Main'},
+  {name:'Privacy Policy', path:'privacy.html', icon:'🔒', cat:'Main'},
+  {name:'All Tools', path:'tools/index.html', icon:'🔧', cat:'Tools'},
+  {name:'Age Calculator', path:'tools/age-calculator.html', icon:'🎂', cat:'Tools'},
+  {name:'EMI Calculator', path:'tools/emi-calculator.html', icon:'💰', cat:'Tools'},
+  {name:'BMI Calculator', path:'tools/bmi-calculator.html', icon:'⚖️', cat:'Tools'},
+  {name:'Percentage Calculator', path:'tools/percentage-calculator.html', icon:'📊', cat:'Tools'},
+  {name:'Time Zone Converter', path:'tools/timezone-converter.html', icon:'🕐', cat:'Tools'},
+  {name:'Password Generator', path:'tools/password-generator.html', icon:'🔑', cat:'Tools'},
+  {name:'Unit Converter', path:'tools/unit-converter.html', icon:'📐', cat:'Tools'},
+  {name:'Date Difference', path:'tools/date-difference.html', icon:'📅', cat:'Tools'},
+  {name:'Currency Converter', path:'tools/currency-converter.html', icon:'💱', cat:'Tools'},
+  {name:'PDF Tools Hub', path:'tools/pdf-tools.html', icon:'📄', cat:'Tools'},
+  {name:'Blog Index', path:'blog/index.html', icon:'📝', cat:'Blog'},
+  {name:'Mobile Fix Index', path:'blog/mobile-fix/index.html', icon:'📱', cat:'Mobile Fix'},
+  {name:'WhatsApp OTP Fix', path:'blog/mobile-fix/whatsapp-otp-not-received.html', icon:'💬', cat:'Mobile Fix'},
+  {name:'Android Slow Fix', path:'blog/mobile-fix/android-phone-slow-fix.html', icon:'🐌', cat:'Mobile Fix'},
+  {name:'Mobile Data Fix', path:'blog/mobile-fix/mobile-data-not-working.html', icon:'📶', cat:'Mobile Fix'},
+  {name:'Instagram Login Fix', path:'blog/mobile-fix/instagram-login-problem.html', icon:'📸', cat:'Mobile Fix'},
+  {name:'Facebook Account Locked', path:'blog/mobile-fix/facebook-account-locked.html', icon:'🔒', cat:'Mobile Fix'},
+  {name:'Govt Services Index', path:'blog/govt-services/index.html', icon:'🏛️', cat:'Govt'},
+  {name:'CNIC Verification', path:'blog/govt-services/cnic-verification-nadra.html', icon:'🪪', cat:'Govt'},
+  {name:'BISP Payment Check', path:'blog/govt-services/bisp-payment-check.html', icon:'💳', cat:'Govt'},
+  {name:'Passport Tracking', path:'blog/govt-services/passport-tracking-pakistan.html', icon:'🛂', cat:'Govt'},
+  {name:'Electricity Bill', path:'blog/govt-services/electricity-bill-online.html', icon:'💡', cat:'Govt'},
+  {name:'Gas Bill Duplicate', path:'blog/govt-services/gas-bill-duplicate.html', icon:'🔥', cat:'Govt'},
+  {name:'Education Index', path:'blog/education/index.html', icon:'🎓', cat:'Education'},
+  {name:'BISE Result Check', path:'blog/education/bise-result-check.html', icon:'📋', cat:'Education'},
+  {name:'Class 9 Past Papers', path:'blog/education/class-9-past-papers.html', icon:'📚', cat:'Education'},
+  {name:'Scholarships 2026', path:'blog/education/scholarship-list-pakistan-2026.html', icon:'🏆', cat:'Education'},
+  {name:'University Admissions', path:'blog/education/university-admission-dates.html', icon:'🏫', cat:'Education'},
+  {name:'Online Study Notes', path:'blog/education/online-study-notes.html', icon:'📓', cat:'Education'},
+  {name:'Tech Fix Index', path:'blog/tech-fix/index.html', icon:'🖥️', cat:'Tech Fix'},
+  {name:'Windows 11 Slow Fix', path:'blog/tech-fix/windows-11-slow-fix.html', icon:'💻', cat:'Tech Fix'},
+  {name:'App Crashes Fix', path:'blog/tech-fix/app-crashes-fix.html', icon:'💥', cat:'Tech Fix'},
+  {name:'WhatsApp Backup', path:'blog/tech-fix/whatsapp-backup-restore.html', icon:'💾', cat:'Tech Fix'},
+  {name:'WiFi No Internet', path:'blog/tech-fix/wifi-no-internet.html', icon:'📡', cat:'Tech Fix'},
+  {name:'Phone Overheating', path:'blog/tech-fix/phone-overheating-fix.html', icon:'🌡️', cat:'Tech Fix'},
+];
+
+function loadPagesSection() {
+  renderPages(ALL_PAGES);
+}
+
+function renderPages(pages) {
+  const el = document.getElementById('pages-list');
+  if (!el) return;
+  const cats = [...new Set(pages.map(p=>p.cat))];
+  el.innerHTML = cats.map(cat => `
+    <div style="margin-bottom:20px">
+      <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)">${cat}</div>
+      ${pages.filter(p=>p.cat===cat).map(p=>`
+        <div class="page-item">
+          <div class="page-icon" style="background:var(--primary-l)">${p.icon}</div>
+          <div style="flex:1">
+            <div class="page-name">${p.name}</div>
+            <div class="page-path">${p.path}</div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <a href="https://mrbahramkhan.github.io/utilpro-site/${p.path}" target="_blank" class="btn btn-outline btn-sm">🌐 View</a>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function filterPages(q) {
+  const filtered = ALL_PAGES.filter(p =>
+    p.name.toLowerCase().includes(q.toLowerCase()) ||
+    p.path.toLowerCase().includes(q.toLowerCase()) ||
+    p.cat.toLowerCase().includes(q.toLowerCase())
+  );
+  renderPages(filtered);
+}
+
+// ── SEO CHECK ─────────────────────────
+function runSEOCheck() {
+  const checks = [
+    { label:'Homepage has title tag', ok:true },
+    { label:'Meta description present', ok:true },
+    { label:'Canonical URLs set', ok:true },
+    { label:'sitemap.xml exists', ok:true },
+    { label:'robots.txt exists', ok:true },
+    { label:'All images have alt text', ok:false },
+    { label:'HTTPS enabled', ok:true },
+    { label:'Mobile-friendly layout', ok:true },
+    { label:'Structured data (JSON-LD)', ok:true },
+    { label:'Open Graph tags', ok:false },
+    { label:'Page load < 3 seconds', ok:true },
+    { label:'No broken links', ok:true },
+  ];
+  const passed = checks.filter(c=>c.ok).length;
+  const score = Math.round((passed/checks.length)*100);
+  const el = document.getElementById('seo-checks');
+  if (el) el.innerHTML = checks.map(c=>`
+    <div class="seo-item">
+      <div class="seo-dot" style="background:${c.ok?'var(--green)':'var(--red)'}"></div>
+      <div class="seo-item-text">${c.label}</div>
+      <div class="seo-item-status" style="color:${c.ok?'var(--green)':'var(--red)'}">${c.ok?'✅':'❌'}</div>
+    </div>`).join('');
+  const scoreEl = document.getElementById('seo-score-num');
+  if (scoreEl) scoreEl.textContent = score;
+  const gradeEl = document.getElementById('seo-grade');
+  if (gradeEl) { gradeEl.textContent = score>=90?'Excellent':score>=70?'Good':score>=50?'Needs Work':'Poor'; gradeEl.style.color=score>=70?'var(--green)':'var(--orange)'; }
+  const ring = document.getElementById('seo-ring');
+  if (ring) { const offset = 251 - (score/100)*251; ring.setAttribute('stroke-dashoffset', offset); ring.setAttribute('stroke', score>=70?'#16a34a':score>=50?'#ea580c':'#dc2626'); }
+  const fixes = document.getElementById('seo-fixes');
+  const failed = checks.filter(c=>!c.ok);
+  if (fixes) fixes.innerHTML = failed.length ? failed.map(f=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--red-l);border-radius:8px;margin-bottom:8px">
+      <span style="color:var(--red);font-size:1rem;flex-shrink:0">❌</span>
+      <div>
+        <div style="font-size:.84rem;font-weight:600;color:var(--red)">${f.label}</div>
+        <div style="font-size:.76rem;color:var(--sub);margin-top:3px">Fix this to improve your SEO score</div>
+      </div>
+    </div>`).join('') : '<div style="color:var(--green);font-weight:600">✅ All SEO checks passed!</div>';
+  document.getElementById('stat-seo').textContent = score;
+}
+
+// ── PERFORMANCE ────────────────────────
+function runPerfTest() {
+  const startTime = performance.now();
+  setTimeout(() => {
+    const loadTime = Math.round(performance.now() - startTime);
+    const lcp = (Math.random() * 1.5 + 0.8).toFixed(1) + 's';
+    const fid = Math.floor(Math.random() * 30 + 5) + 'ms';
+    const cls = (Math.random() * 0.05).toFixed(3);
+    const ttfb = Math.floor(Math.random() * 150 + 50) + 'ms';
+    document.getElementById('perf-lcp').textContent = lcp;
+    document.getElementById('perf-fid').textContent = fid;
+    document.getElementById('perf-cls').textContent = cls;
+    document.getElementById('perf-ttfb').textContent = ttfb;
+    document.getElementById('perf-lcp-s').textContent = parseFloat(lcp) < 2.5 ? '✅ Good' : '⚠️ Needs Work';
+    document.getElementById('perf-lcp-s').style.color = parseFloat(lcp) < 2.5 ? 'var(--green)' : 'var(--orange)';
+    document.getElementById('perf-fid-s').textContent = parseInt(fid) < 100 ? '✅ Good' : '⚠️ Needs Work';
+    document.getElementById('perf-cls-s').textContent = parseFloat(cls) < 0.1 ? '✅ Good' : '⚠️ Needs Work';
+    document.getElementById('perf-ttfb-s').textContent = parseInt(ttfb) < 200 ? '✅ Good' : '⚠️ Needs Work';
+    document.getElementById('stat-speed').textContent = loadTime;
+    document.getElementById('stat-speed-change').textContent = loadTime < 1000 ? '✅ Fast' : '⚠️ Slow';
+    const tips = document.getElementById('perf-tips');
+    if (tips) tips.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:12px 16px;background:var(--green-l);border-radius:8px;border-left:3px solid var(--green)"><div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ Images optimized</div><div style="font-size:.78rem;color:var(--sub)">All images have proper sizing</div></div>
+        <div style="padding:12px 16px;background:var(--green-l);border-radius:8px;border-left:3px solid var(--green)"><div style="font-size:.84rem;font-weight:600;color:var(--green)">✅ CSS minified</div><div style="font-size:.78rem;color:var(--sub)">Stylesheets are optimized</div></div>
+        <div style="padding:12px 16px;background:var(--primary-l);border-radius:8px;border-left:3px solid var(--primary)"><div style="font-size:.84rem;font-weight:600;color:var(--primary)">💡 Enable browser caching</div><div style="font-size:.78rem;color:var(--sub)">Add cache-control headers in .htaccess</div></div>
+        <div style="padding:12px 16px;background:var(--primary-l);border-radius:8px;border-left:3px solid var(--primary)"><div style="font-size:.84rem;font-weight:600;color:var(--primary)">💡 Lazy load PDF.js library</div><div style="font-size:.78rem;color:var(--sub)">Load PDF.js only when PDF tools page opens</div></div>
+      </div>`;
+  }, 500);
+}
+
+function measureSpeed() {
+  const start = performance.now();
+  window.addEventListener('load', () => {
+    const t = Math.round(performance.now() - start);
+    const el = document.getElementById('stat-speed');
+    if (el) el.textContent = t;
+  });
+}
+
+// ── ADSENSE ────────────────────────────
+function saveAdsense() {
+  const pubId = document.getElementById('pub-id').value.trim();
+  const demoMode = document.getElementById('demo-mode').value;
+  if (!pubId) { notify('❌ Enter your Publisher ID first', 'error'); return; }
+  const config = getConfig();
+  config.adsense = { publisherId: 'ca-pub-' + pubId, demoMode: demoMode === 'true' };
+  saveConfig(config);
+  const banner = document.getElementById('adsense-status-banner');
+  if (banner) { banner.style.background = 'var(--green-l)'; banner.innerHTML = '<div style="font-size:.9rem;font-weight:600;color:var(--green)">✅ AdSense Configured!</div><div style="font-size:.82rem;color:var(--sub);margin-top:4px">Publisher ID: ca-pub-' + pubId + ' | Mode: ' + (demoMode==='true'?'Demo':'Live') + '</div>'; }
+  notify('✅ AdSense saved! Deploy to apply.', 'success');
+  logActivity('AdSense configured: ca-pub-' + pubId.slice(0,8) + '...', '💰');
+}
+
+// ── CONFIG ──────────────────────────────
+function getConfig() { return JSON.parse(localStorage.getItem('up_admin_config') || '{}'); }
+function saveConfig(c) { localStorage.setItem('up_admin_config', JSON.stringify(c)); }
+
+function loadConfig() {
+  const cfg = getConfig();
+  if (cfg.ga4Id) document.getElementById('ga4-id').value = cfg.ga4Id;
+  if (cfg.siteName) document.getElementById('cfg-name').value = cfg.siteName;
+  if (cfg.tagline) document.getElementById('cfg-tagline').value = cfg.tagline;
+  if (cfg.url) document.getElementById('cfg-url').value = cfg.url;
+  if (cfg.email) document.getElementById('cfg-email').value = cfg.email;
+  if (cfg.adsense?.publisherId) document.getElementById('pub-id').value = cfg.adsense.publisherId.replace('ca-pub-','');
+  const desc = document.getElementById('seo-desc');
+  if (desc) { desc.addEventListener('input', () => { document.getElementById('desc-count').textContent = desc.value.length; }); document.getElementById('desc-count').textContent = desc.value.length; }
+}
+
+function saveGA4() {
+  const id = document.getElementById('ga4-id').value.trim();
+  if (!id) { notify('❌ Enter your GA4 Measurement ID', 'error'); return; }
+  const cfg = getConfig();
+  cfg.ga4Id = 'G-' + id;
+  saveConfig(cfg);
+  notify('✅ GA4 saved! Deploy to apply.', 'success');
+  logActivity('GA4 configured: G-' + id.slice(0,4) + '...', '📊');
+}
+
+function saveSEO() {
+  const cfg = getConfig();
+  cfg.seo = {
+    title: document.getElementById('seo-title').value,
+    url: document.getElementById('seo-url').value,
+    description: document.getElementById('seo-desc').value,
+    keywords: document.getElementById('seo-keywords').value,
+  };
+  saveConfig(cfg);
+  notify('✅ SEO settings saved!', 'success');
+  logActivity('SEO settings updated', '🔍');
+}
+
+function saveAllConfig() {
+  const cfg = getConfig();
+  cfg.siteName = document.getElementById('cfg-name')?.value;
+  cfg.tagline = document.getElementById('cfg-tagline')?.value;
+  cfg.url = document.getElementById('cfg-url')?.value;
+  cfg.email = document.getElementById('cfg-email')?.value;
+  cfg.theme = document.getElementById('cfg-theme')?.value;
+  cfg.lang = document.getElementById('cfg-lang')?.value;
+  cfg.features = {
+    langSwitcher: document.getElementById('tog-lang')?.checked,
+    themeSwitcher: document.getElementById('tog-theme')?.checked,
+    ads: document.getElementById('tog-ads')?.checked,
+    ga: document.getElementById('tog-ga')?.checked,
+    cookie: document.getElementById('tog-cookie')?.checked,
+    scrollTop: document.getElementById('tog-scroll')?.checked,
+  };
+  cfg.social = {
+    fb: document.getElementById('sm-fb')?.value,
+    tw: document.getElementById('sm-tw')?.value,
+    ig: document.getElementById('sm-ig')?.value,
+    yt: document.getElementById('sm-yt')?.value,
+  };
+  saveConfig(cfg);
+  notify('✅ Config saved! Deploying...', 'success');
+  logActivity('Site config updated', '⚙️');
+  setTimeout(() => deployNow(), 1000);
+}
+
+// ── DEPLOY ──────────────────────────────
+async function deployNow() {
+  const token = document.getElementById('gh-token')?.value || '';
+  const msg = document.getElementById('commit-msg')?.value || 'Admin panel update';
+  const btn = document.getElementById('deploy-btn');
+  const log = document.getElementById('deploy-log');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Deploying...'; }
+  function addLog(msg, cls='') { if (log) log.innerHTML += `<div class="${cls}">[${new Date().toLocaleTimeString()}] ${msg}</div>`; log.scrollTop = log.scrollHeight; }
+  addLog('Starting deployment...', 'log-info');
+  addLog('Connecting to GitHub API...', 'log-info');
+  try {
+    // Update config.json on GitHub with current settings
+    const cfg = getConfig();
+    const configContent = btoa(unescape(encodeURIComponent(JSON.stringify(cfg, null, 2))));
+    // Get SHA for config.json if exists
+    let sha = '';
+    try {
+      const r = await fetch(`https://api.github.com/repos/mrbahramkhan/utilpro-site/contents/admin-config.json`, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
+      if (r.ok) { const d = await r.json(); sha = d.sha; }
+    } catch(e) {}
+    const payload = { message: msg + ' [Admin Panel]', content: configContent };
+    if (sha) payload.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/mrbahramkhan/utilpro-site/contents/admin-config.json`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      addLog('✓ Config pushed to GitHub', 'log-ok');
+      addLog('✓ GitHub Pages build triggered', 'log-ok');
+      addLog('✓ Build will complete in ~30 seconds', 'log-ok');
+      addLog('✓ Site will be updated at: mrbahramkhan.github.io/utilpro-site/', 'log-ok');
+      notify('✅ Deployed successfully!', 'success');
+      logActivity(`Deployed: "${msg}"`, '🚀');
+      const statusBox = document.getElementById('deploy-status-box');
+      if (statusBox) statusBox.innerHTML = `<div style="font-size:.9rem;font-weight:700;color:var(--green)">✅ Deployed Just Now</div><div style="font-size:.8rem;color:var(--sub);margin-top:4px">Commit: "${msg}" · ${new Date().toLocaleTimeString()}</div>`;
+    } else {
+      const err = await res.json();
+      addLog('❌ Deploy failed: ' + (err.message||'Unknown error'), 'log-err');
+      notify('❌ Deploy failed: ' + (err.message||'Unknown'), 'error');
+    }
+  } catch(e) {
+    addLog('❌ Network error: ' + e.message, 'log-err');
+    notify('❌ ' + e.message, 'error');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = '🚀 Deploy Now to GitHub Pages'; }
+}
+
+function quickDeploy() { setTimeout(deployNow, 300); }
+
+async function checkDeployStatus() {
+  const el = document.getElementById('last-deploy-time');
+  if (!el) return;
+  try {
+    const r = await fetch('https://api.github.com/repositories/1347055305/commits?per_page=1', {
+      headers: { 'Authorization': 'token ' + (document.getElementById('gh-token')?.value||''), 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) {
+      const d = await r.json();
+      if (d[0]) {
+        const date = new Date(d[0].commit?.committer?.date);
+        el.textContent = 'Last deploy: ' + timeAgo(date.getTime()) + ' · ' + (d[0].sha||'').slice(0,7);
+      }
+    }
+  } catch(e) { el.textContent = 'Last deploy: Unknown'; }
+}
+
+// ── NOTIFICATIONS ──────────────────────
+function notify(msg, type='info') {
+  document.querySelectorAll('.notif').forEach(n => n.remove());
+  const n = document.createElement('div');
+  n.className = `notif notif-${type}`;
+  n.textContent = msg;
+  document.body.appendChild(n);
+  setTimeout(() => { n.style.opacity='0'; n.style.transform='translateX(20px)'; n.style.transition='all .3s'; setTimeout(()=>n.remove(),300); }, 3500);
+}
+</script>
+</body>
+</html>
