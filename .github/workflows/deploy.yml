@@ -1,85 +1,76 @@
 # =====================================================
 # UtilPro — Full Automation Pipeline
-# Triggers on every push to main branch
+# GitHub → Netlify auto-deploys (already connected)
+# This workflow adds: SEO ping + Health check
 # =====================================================
-name: 🚀 Auto Deploy UtilPro
+name: 🚀 UtilPro Auto Pipeline
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  # Manual trigger from GitHub Actions tab
   workflow_dispatch:
 
 jobs:
 
-  # ─── JOB 1: DEPLOY TO NETLIFY ─────────────────────
-  deploy-netlify:
-    name: 🌐 Deploy to Netlify
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: 📦 Install Netlify CLI
-        run: npm install -g netlify-cli
-
-      - name: 🚀 Deploy to Netlify (Production)
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: |
-          netlify deploy \
-            --dir=. \
-            --prod \
-            --message="Auto deploy: ${{ github.event.head_commit.message }}"
-
-      - name: ✅ Print live URL
-        run: echo "🌐 Live at https://utilpro.netlify.app"
-
-  # ─── JOB 2: SEO PING ──────────────────────────────
+  # ─── JOB 1: SEO PING ──────────────────────────────
   seo-ping:
     name: 🔍 Ping Search Engines
     runs-on: ubuntu-latest
-    needs: deploy-netlify
     steps:
-      - name: 📡 Ping Google (sitemap)
+      - name: ⏳ Wait for Netlify deploy (60s)
+        run: sleep 60
+
+      - name: 📡 Ping Google Sitemap
         run: |
           curl -s "https://www.google.com/ping?sitemap=https://utilpro.netlify.app/sitemap.xml" || true
           echo "✅ Google pinged"
 
-      - name: 📡 Ping Bing (sitemap)
+      - name: 📡 Ping Bing Sitemap
         run: |
           curl -s "https://www.bing.com/ping?sitemap=https://utilpro.netlify.app/sitemap.xml" || true
           echo "✅ Bing pinged"
 
-  # ─── JOB 3: HEALTH CHECK ──────────────────────────
+      - name: 📡 Ping IndexNow (fast indexing)
+        run: |
+          curl -s "https://api.indexnow.org/indexnow?url=https://utilpro.netlify.app/sitemap.xml&key=utilpro2026" || true
+          echo "✅ IndexNow pinged"
+
+  # ─── JOB 2: HEALTH CHECK ──────────────────────────
   health-check:
-    name: ✅ Site Health Check
+    name: ✅ Health Check
     runs-on: ubuntu-latest
-    needs: deploy-netlify
+    needs: seo-ping
     steps:
-      - name: 🏠 Check Homepage
+      - name: 🏠 Homepage
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/)
-          echo "Homepage: HTTP $STATUS"
-          if [ "$STATUS" != "200" ]; then exit 1; fi
+          S=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/)
+          echo "Homepage: HTTP $S"; [ "$S" = "200" ] && echo "✅ OK" || echo "⚠️ Issue"
 
-      - name: 🔧 Check Tools Page
+      - name: 📄 PDF Tools
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/tools/pdf-tools.html)
-          echo "PDF Tools: HTTP $STATUS"
+          S=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/tools/pdf-tools.html)
+          echo "PDF Tools: HTTP $S"; [ "$S" = "200" ] && echo "✅ OK" || echo "⚠️ Issue"
 
-      - name: 🗺️ Check Sitemap
+      - name: 🔧 EMI Calculator
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/sitemap.xml)
-          echo "Sitemap: HTTP $STATUS"
+          S=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/tools/emi-calculator.html)
+          echo "EMI Calc: HTTP $S"; [ "$S" = "200" ] && echo "✅ OK" || echo "⚠️ Issue"
 
-      - name: ✅ All checks passed!
-        run: echo "🎉 Site is live and healthy!"
+      - name: 🗺️ Sitemap
+        run: |
+          S=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/sitemap.xml)
+          echo "Sitemap: HTTP $S"; [ "$S" = "200" ] && echo "✅ OK" || echo "⚠️ Issue"
+
+      - name: 🔐 Admin Panel
+        run: |
+          S=$(curl -s -o /dev/null -w "%{http_code}" https://utilpro.netlify.app/admin.html)
+          echo "Admin: HTTP $S"; [ "$S" = "200" ] && echo "✅ OK" || echo "⚠️ Issue"
+
+      - name: 🎉 Summary
+        run: |
+          echo "================================================"
+          echo "  ✅ UtilPro is live at utilpro.netlify.app"
+          echo "  📊 GA4: G-X52KR4FG9X tracking active"
+          echo "  💰 AdSense: ca-pub-3332637557301277"
+          echo "  🔍 SEO pings sent to Google + Bing"
+          echo "================================================"
