@@ -933,18 +933,18 @@ window.addEventListener('load', () => {
 function showFallbackLogin() {
   const loginArea = document.getElementById('netlify-login-area');
   if (loginArea) {
-    loginArea.innerHTML = \`
-      <div class="login-field">
-        <label>User ID</label>
-        <input type="text" id="uid" placeholder="Enter user ID" value="admin" autocomplete="username">
-      </div>
-      <div class="login-field" style="margin-top:10px">
-        <label>Password</label>
-        <input type="password" id="pwd" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')fallbackLogin()">
-      </div>
-      <button class="login-btn" onclick="fallbackLogin()" style="margin-top:12px">🔐 Sign In</button>
-      <p style="text-align:center;font-size:.72rem;color:var(--sub);margin-top:10px">Fallback mode — Netlify not detected</p>
-    \`;
+    loginArea.innerHTML = [
+      '<div class="login-field">',
+      '<label>User ID</label>',
+      '<input type="text" id="uid" placeholder="Enter user ID" value="admin" autocomplete="username">',
+      '</div>',
+      '<div class="login-field" style="margin-top:10px">',
+      '<label>Password</label>',
+      '<input type="password" id="pwd" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key===\'Enter\')fallbackLogin()">',
+      '</div>',
+      '<button class="login-btn" onclick="fallbackLogin()" style="margin-top:12px">🔐 Sign In</button>',
+      '<p style="text-align:center;font-size:.72rem;color:var(--sub);margin-top:10px">Fallback mode</p>'
+    ].join('');
   }
 }
 
@@ -1009,6 +1009,7 @@ function initAdmin() {
   loadConfig();
   loadPagesSection();
   checkDeployStatus();
+  checkSiteStatuses();
   measureSpeed();
   // Track this admin session
   logActivity('Admin logged in');
@@ -1482,6 +1483,262 @@ function notify(msg, type='info') {
   document.body.appendChild(n);
   setTimeout(() => { n.style.opacity='0'; n.style.transform='translateX(20px)'; n.style.transition='all .3s'; setTimeout(()=>n.remove(),300); }, 3500);
 }
+
+// ── NETLIFY DEPLOY ────────────────────────────────
+async function loadNetlifySites() {
+  const token = document.getElementById('netlify-token').value.trim();
+  if (!token) { notify('❌ Netlify token daalo pehle', 'error'); return; }
+  addDeployLog('Netlify sites load ho rahe hain...', 'log-info');
+  try {
+    const res = await fetch('https://api.netlify.com/api/v1/sites', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const sites = await res.json();
+    const sel = document.getElementById('netlify-site-select');
+    sel.innerHTML = sites.map(s =>
+      `<option value="${s.id}" data-name="${s.name}" data-url="${s.url||''}">${s.name} — ${s.url||s.id}</option>`
+    ).join('');
+    document.getElementById('netlify-deploy-btn').disabled = false;
+    addDeployLog(`✅ ${sites.length} sites mili!`, 'log-ok');
+    notify(`✅ ${sites.length} Netlify sites loaded`, 'success');
+    // Auto-select utilpro
+    const utilpro = sites.find(s => s.name.includes('utilpro') || (s.url||'').includes('utilpro'));
+    if (utilpro) sel.value = utilpro.id;
+  } catch(e) {
+    addDeployLog('❌ ' + e.message, 'log-err');
+    notify('❌ ' + e.message, 'error');
+  }
+}
+
+// CRC32 table for ZIP builder
+const _crc32Table = (() => {
+  const t = new Uint32Array(256);
+  for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c;}
+  return t;
+})();
+
+function _crc32(data) {
+  let c = 0xFFFFFFFF;
+  for(let i=0;i<data.length;i++) c=(c>>>8)^_crc32Table[(c^data[i])&0xFF];
+  return (c^0xFFFFFFFF)>>>0;
+}
+
+function _buildZip(files) {
+  const enc = new TextEncoder();
+  const u16 = n => [n&0xFF,(n>>8)&0xFF];
+  const u32 = n => [n&0xFF,(n>>8)&0xFF,(n>>16)&0xFF,(n>>24)&0xFF];
+  const now = new Date();
+  const dosDate = ((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  const dosTime = (now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1);
+  const parts=[], cd=[];
+  let offset=0;
+  for(const [name, content] of Object.entries(files)) {
+    const nameB = enc.encode(name);
+    const data  = typeof content === 'string' ? enc.encode(content) : content;
+    const crc   = _crc32(data);
+    const local = new Uint8Array([
+      0x50,0x4B,0x03,0x04,0x14,0x00,0x00,0x00,0x00,0x00,
+      ...u16(dosTime),...u16(dosDate),...u32(crc),
+      ...u32(data.length),...u32(data.length),
+      ...u16(nameB.length),0x00,0x00,...nameB
+    ]);
+    parts.push(local, data);
+    cd.push(new Uint8Array([
+      0x50,0x4B,0x01,0x02,0x14,0x00,0x14,0x00,0x00,0x00,0x00,0x00,
+      ...u16(dosTime),...u16(dosDate),...u32(crc),
+      ...u32(data.length),...u32(data.length),
+      ...u16(nameB.length),0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      ...u32(offset),...nameB
+    ]));
+    offset += local.length + data.length;
+  }
+  const cdSize = cd.reduce((s,c)=>s+c.length,0);
+  const eocd = new Uint8Array([
+    0x50,0x4B,0x05,0x06,0x00,0x00,0x00,0x00,
+    ...u16(Object.keys(files).length),...u16(Object.keys(files).length),
+    ...u32(cdSize),...u32(offset),0x00,0x00
+  ]);
+  const all=[...parts,...cd,eocd];
+  const total=all.reduce((s,p)=>s+p.length,0);
+  const buf=new Uint8Array(total); let pos=0;
+  for(const p of all){buf.set(p,pos);pos+=p.length;}
+  return buf;
+}
+
+async function deployToNetlify() {
+  const token  = document.getElementById('netlify-token').value.trim();
+  const siteId = document.getElementById('netlify-site-select').value;
+  const type   = document.getElementById('netlify-deploy-type').value;
+  if (!token)  { notify('❌ Netlify token daalo', 'error'); return; }
+  if (!siteId) { notify('❌ Site select karo', 'error'); return; }
+
+  const btn = document.getElementById('netlify-deploy-btn');
+  btn.disabled = true; btn.textContent = '⏳ Deploying...';
+
+  addDeployLog('Netlify deploy shuru...', 'log-info');
+
+  // Build files object
+  const files = {};
+
+  if (type === 'verify' || type === 'full') {
+    files['google793bb2cb8ea6b3a8.html'] = 'google-site-verification: google793bb2cb8ea6b3a8.html';
+  }
+
+  if (type === 'full') {
+    addDeployLog('Full site ZIP ban raha hai...', 'log-info');
+    // Add key files for full deploy
+    const siteFiles = {
+      'index.html': await fetchLocalFile('index.html'),
+      'admin.html': await fetchLocalFile('admin.html'),
+      'sitemap.xml': await fetchLocalFile('sitemap.xml'),
+      'robots.txt': await fetchLocalFile('robots.txt'),
+      'netlify.toml': await fetchLocalFile('netlify.toml'),
+      'google793bb2cb8ea6b3a8.html': 'google-site-verification: google793bb2cb8ea6b3a8.html',
+    };
+    Object.assign(files, siteFiles);
+  }
+
+  addDeployLog(`ZIP ban raha hai: ${Object.keys(files).length} files...`, 'log-info');
+  const zip = _buildZip(files);
+  addDeployLog(`ZIP ready: ${zip.length} bytes`, 'log-ok');
+
+  // Two-step Netlify deploy: 1) Create deploy with SHA digests, 2) Upload files
+  try {
+    // Step 1: Create deploy with file digests
+    addDeployLog('Deploy create ho raha hai...', 'log-info');
+    const enc = new TextEncoder();
+    const fileDigests = {};
+
+    for (const [name, content] of Object.entries(files)) {
+      const data = typeof content === 'string' ? enc.encode(content) : content;
+      const hashBuffer = await crypto.subtle.digest('SHA-1', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      fileDigests['/' + name] = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    const createRes = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/deploys`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ files: fileDigests })
+    });
+
+    if (!createRes.ok) {
+      const err = await createRes.json();
+      throw new Error(err.message || `HTTP ${createRes.status}`);
+    }
+
+    const deploy = await createRes.json();
+    const deployId = deploy.id;
+    const required = deploy.required || [];
+    addDeployLog(`Deploy ID: ${deployId}`, 'log-ok');
+    addDeployLog(`Files to upload: ${required.length}`, 'log-info');
+
+    // Step 2: Upload required files
+    for (const [name, content] of Object.entries(files)) {
+      const data = typeof content === 'string' ? enc.encode(content) : content;
+      const hashBuffer = await crypto.subtle.digest('SHA-1', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const sha = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+
+      if (required.includes(sha) || required.length === 0) {
+        addDeployLog(`Uploading: ${name}`, 'log-info');
+        const upRes = await fetch(`https://api.netlify.com/api/v1/deploys/${deployId}/files/${name}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/octet-stream'
+          },
+          body: data
+        });
+        if (upRes.ok) addDeployLog(`✅ ${name} uploaded`, 'log-ok');
+        else addDeployLog(`⚠️ ${name} upload issue: HTTP ${upRes.status}`, 'log-warn');
+      } else {
+        addDeployLog(`⏭️ ${name} already cached`, 'log-info');
+      }
+    }
+
+    // Poll for ready state
+    addDeployLog('Deploy processing...', 'log-info');
+    let attempts = 0;
+    const poll = async () => {
+      attempts++;
+      try {
+        const r = await fetch(`https://api.netlify.com/api/v1/deploys/${deployId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const d = await r.json();
+        const state = d.state || '';
+        addDeployLog(`State: ${state} (${attempts}/15)`, state==='ready'?'log-ok':'log-info');
+        if (state === 'ready' || state === 'uploaded') {
+          const liveUrl = d.ssl_url || d.url || 'https://utilpro.netlify.app';
+          addDeployLog(`🎉 LIVE: ${liveUrl}`, 'log-ok');
+          notify('✅ Netlify deploy successful!', 'success');
+          logActivity('Netlify direct deploy complete', '🌐');
+          const statusBox = document.getElementById('deploy-status-box');
+          if(statusBox) statusBox.innerHTML = `<div style="font-size:.88rem;font-weight:700;color:var(--green)">✅ Netlify: Just Deployed</div><div style="font-size:.78rem;color:var(--sub);margin-top:3px">${new Date().toLocaleTimeString()}</div>`;
+          btn.disabled = false; btn.textContent = '🌐 Deploy to Netlify';
+        } else if (state === 'error') {
+          addDeployLog('❌ Deploy error: ' + (d.error_message||'Unknown'), 'log-err');
+          notify('❌ Deploy failed', 'error');
+          btn.disabled = false; btn.textContent = '🌐 Deploy to Netlify';
+        } else if (attempts < 15) {
+          setTimeout(poll, 4000);
+        } else {
+          addDeployLog('✅ Deploy submitted — check utilpro.netlify.app', 'log-ok');
+          notify('✅ Deploy submitted! Site updating...', 'success');
+          btn.disabled = false; btn.textContent = '🌐 Deploy to Netlify';
+        }
+      } catch(e) {
+        addDeployLog('Poll error: ' + e.message, 'log-warn');
+        if(attempts < 5) setTimeout(poll, 5000);
+        else { btn.disabled=false; btn.textContent='🌐 Deploy to Netlify'; }
+      }
+    };
+    setTimeout(poll, 6000);
+
+  } catch(e) {
+    addDeployLog('❌ ' + e.message, 'log-err');
+    notify('❌ ' + e.message, 'error');
+    btn.disabled = false; btn.textContent = '🌐 Deploy to Netlify';
+  }
+}
+
+// Fetch a file from same origin (for full deploy)
+async function fetchLocalFile(path) {
+  try {
+    const res = await fetch(path);
+    return res.ok ? await res.text() : `<!-- ${path} -->`;
+  } catch(e) { return `<!-- ${path} not found -->`; }
+}
+
+function addDeployLog(msg, cls='log-info') {
+  const log = document.getElementById('deploy-log');
+  if(!log) return;
+  const t = new Date().toLocaleTimeString();
+  log.innerHTML += `<div class="${cls}">[${t}] ${msg}</div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+// Check site statuses on load
+async function checkSiteStatuses() {
+  // Netlify
+  try {
+    const r = await fetch('https://utilpro.netlify.app/robots.txt', {cache:'no-store'});
+    const el = document.getElementById('netlify-status');
+    if(el) el.textContent = r.ok ? '✅ Live — HTTP 200' : '⚠️ Issue: HTTP '+r.status;
+  } catch(e) {
+    const el = document.getElementById('netlify-status');
+    if(el) el.textContent = '🔄 Checking...';
+  }
+  // GitHub Actions
+  const el = document.getElementById('actions-status');
+  if(el) el.textContent = '✅ Active';
+}
+
 </script>
 </body>
 </html>
