@@ -3,5 +3,25 @@
   "adsense": {
     "publisherId": "ca-pub-8557006651582330",
     "demoMode": false
+  },
+  "siteName": "UtilPro",
+  "tagline": "Free Tools and Expert Guides",
+  "url": "https://mrbahramkhan.github.io/utilpro-site/",
+  "email": "",
+  "theme": "light",
+  "lang": "en",
+  "features": {
+    "langSwitcher": true,
+    "themeSwitcher": true,
+    "ads": true,
+    "ga": true,
+    "cookie": true,
+    "scrollTop": true
+  },
+  "social": {
+    "fb": "",
+    "tw": "",
+    "ig": "",
+    "yt": ""
   }
 }
